@@ -1,0 +1,96 @@
+{
+  "common": {
+    "appName": "M-Kristo",
+    "loading": "Inapakia...",
+    "retry": "Jaribu Tena",
+    "save": "Hifadhi",
+    "cancel": "Ghairi",
+    "delete": "Futa",
+    "edit": "Hariri",
+    "close": "Funga",
+    "search": "Tafuta",
+    "seeAll": "Tazama Yote",
+    "error": "Hitilafu imetokea",
+    "empty": "Hakuna kitu hapa bado",
+    "today": "Leo"
+  },
+  "tabs": {
+    "home": "Nyumbani",
+    "bible": "Biblia",
+    "prayers": "Sala",
+    "calendar": "Shajara",
+    "more": "Zaidi"
+  },
+  "home": {
+    "greeting": "Habari yako",
+    "verseOfDay": "Neno la Leo",
+    "readMore": "Soma Zaidi",
+    "quickLinks": "Njia za Haraka",
+    "dictionary": "Kamusi ya Biblia",
+    "hymns": "Tenzi",
+    "devotion": "Tafakari"
+  },
+  "auth": {
+    "login": "Ingia",
+    "register": "Jisajili",
+    "phoneNumber": "Nambari ya Simu",
+    "password": "Nenosiri",
+    "fullName": "Jina Kamili",
+    "sendCode": "Tuma Msimbo",
+    "verifyCode": "Thibitisha Msimbo",
+    "otpSentTo": "Msimbo umetumwa kwa {{phone}}",
+    "continueAsGuest": "Endelea Bila Kujisajili"
+  },
+  "bible": {
+    "title": "Biblia Takatifu",
+    "oldTestament": "Agano la Kale",
+    "newTestament": "Agano Jipya",
+    "chapter": "Sura",
+    "verse": "Mstari",
+    "searchPlaceholder": "Tafuta mstari au neno...",
+    "bookmarked": "Umewekwa Alama"
+  },
+  "prayers": {
+    "title": "Sala",
+    "commonPrayers": "Sala za Kawaida",
+    "novena": "Novena",
+    "ourFather": "Baba Yetu",
+    "hailMary": "Salamu Maria",
+    "apostlesCreed": "Kanuni ya Mitume",
+    "rosary": "Rozari"
+  },
+  "devotion": {
+    "title": "Tafakari ya Leo",
+    "nenoLaLeo": "Neno la Leo",
+    "somoLaLeo": "Somo la Leo",
+    "reflection": "Tafakari"
+  },
+  "calendar": {
+    "title": "Shajara Yangu",
+    "addNote": "Ongeza Kumbukumbu",
+    "myNotes": "Kumbukumbu Zangu",
+    "notePlaceholder": "Andika mawazo yako ya leo...",
+    "noNotesToday": "Hakuna kumbukumbu leo. Andika la kwanza!"
+  },
+  "dictionary": {
+    "title": "Kamusi ya Biblia",
+    "searchPlaceholder": "Tafuta neno...",
+    "meaning": "Maana",
+    "relatedVerses": "Mistari Inayohusiana"
+  },
+  "hymns": {
+    "title": "Tenzi za Rohoni",
+    "searchPlaceholder": "Tafuta wimbo..."
+  },
+  "settings": {
+    "title": "Mipangilio",
+    "language": "Lugha",
+    "swahili": "Kiswahili",
+    "english": "Kiingereza",
+    "theme": "Mandhari",
+    "notifications": "Arifa",
+    "account": "Akaunti",
+    "logout": "Toka",
+    "subscription": "Usajili"
+  }
+}

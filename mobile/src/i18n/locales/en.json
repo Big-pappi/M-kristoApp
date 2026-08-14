@@ -1,0 +1,96 @@
+{
+  "common": {
+    "appName": "M-Kristo",
+    "loading": "Loading...",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "search": "Search",
+    "seeAll": "See All",
+    "error": "Something went wrong",
+    "empty": "Nothing here yet",
+    "today": "Today"
+  },
+  "tabs": {
+    "home": "Home",
+    "bible": "Bible",
+    "prayers": "Prayers",
+    "calendar": "Journal",
+    "more": "More"
+  },
+  "home": {
+    "greeting": "Hello",
+    "verseOfDay": "Verse of the Day",
+    "readMore": "Read More",
+    "quickLinks": "Quick Links",
+    "dictionary": "Bible Dictionary",
+    "hymns": "Hymns",
+    "devotion": "Devotion"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Sign Up",
+    "phoneNumber": "Phone Number",
+    "password": "Password",
+    "fullName": "Full Name",
+    "sendCode": "Send Code",
+    "verifyCode": "Verify Code",
+    "otpSentTo": "Code sent to {{phone}}",
+    "continueAsGuest": "Continue as Guest"
+  },
+  "bible": {
+    "title": "Holy Bible",
+    "oldTestament": "Old Testament",
+    "newTestament": "New Testament",
+    "chapter": "Chapter",
+    "verse": "Verse",
+    "searchPlaceholder": "Search a verse or word...",
+    "bookmarked": "Bookmarked"
+  },
+  "prayers": {
+    "title": "Prayers",
+    "commonPrayers": "Common Prayers",
+    "novena": "Novena",
+    "ourFather": "Our Father",
+    "hailMary": "Hail Mary",
+    "apostlesCreed": "Apostles' Creed",
+    "rosary": "Rosary"
+  },
+  "devotion": {
+    "title": "Today's Devotion",
+    "nenoLaLeo": "Word of the Day",
+    "somoLaLeo": "Today's Reading",
+    "reflection": "Reflection"
+  },
+  "calendar": {
+    "title": "My Journal",
+    "addNote": "Add Note",
+    "myNotes": "My Notes",
+    "notePlaceholder": "Write your thoughts for today...",
+    "noNotesToday": "No notes today. Write the first one!"
+  },
+  "dictionary": {
+    "title": "Bible Dictionary",
+    "searchPlaceholder": "Search a word...",
+    "meaning": "Meaning",
+    "relatedVerses": "Related Verses"
+  },
+  "hymns": {
+    "title": "Hymns",
+    "searchPlaceholder": "Search a hymn..."
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "swahili": "Swahili",
+    "english": "English",
+    "theme": "Theme",
+    "notifications": "Notifications",
+    "account": "Account",
+    "logout": "Logout",
+    "subscription": "Subscription"
+  }
+}
