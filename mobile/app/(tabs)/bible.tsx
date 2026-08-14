@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native"
+import { useRouter } from "expo-router"
 
 import { listBooks, type Book } from "../../src/api/bible"
 import { Card } from "../../src/components/Card"
@@ -10,6 +11,7 @@ import { useTheme } from "../../src/theme/useTheme"
 export default function BibleScreen() {
   const { t, i18n } = useTranslation()
   const { colors, spacing, radius } = useTheme()
+  const router = useRouter()
   const isEnglish = i18n.language === "en"
 
   const [books, setBooks] = useState<Book[]>([])
@@ -65,7 +67,10 @@ export default function BibleScreen() {
                 {section.title}
               </Text>
               {section.data.map((book) => (
-                <Pressable key={book.id}>
+                <Pressable
+                  key={book.id}
+                  onPress={() => router.push({ pathname: "/bible/[bookId]", params: { bookId: book.id } })}
+                >
                   <Card style={{ marginBottom: spacing.sm }}>
                     <Text style={{ color: colors.text, fontWeight: "600" }}>
                       {isEnglish ? book.name_en : book.name_sw}

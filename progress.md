@@ -6,6 +6,53 @@ entry here.
 
 ---
 
+## 2026-08-14 — Expo mobile app: full screen set + auth flow
+
+**Status:** Mobile app (Step 4 of 4) — core screens complete and verified.
+
+**Done:**
+- Built out every remaining screen on top of the earlier tab scaffold
+  (Home, Bible, Sala, Shajara, tab layout):
+  - `app/(tabs)/more.tsx` — "Zaidi" settings hub: quick links (dictionary,
+    hymns, favorites), language switch (sw/en), notifications toggle,
+    account/subscription/logout.
+  - `app/dictionary.tsx` — Kamusi ya Biblia, debounced search.
+  - `app/hymns.tsx` — Tenzi, searchable + expandable lyrics.
+  - `app/devotion.tsx` — Neno la Leo / Tafakari / Somo tabs.
+  - `app/favorites.tsx`, `app/profile.tsx`, `app/subscription.tsx`.
+  - `app/auth/login.tsx`, `app/auth/register.tsx`,
+    `app/auth/verify-otp.tsx` — phone + password login, OTP-based signup,
+    guest-browsing escape hatch.
+- Added supporting API modules: `src/api/hymns.ts`, `src/api/favorites.ts`,
+  `src/api/subscriptions.ts` (typed fetch wrappers matching the Django
+  serializers).
+- Added shared UI: `src/components/TextField.tsx`,
+  `src/components/PrimaryButton.tsx`.
+- Fixed a couple of wiring bugs from the initial scaffold (wrong
+  `changeLanguage` import name, a non-existent `colors.primarySoft`
+  token, quick-link routes pointing at a nonexistent `/more/*` path).
+- Installed the missing `expo-font` peer dep for `@expo/vector-icons`;
+  `npx expo-doctor` now reports 21/21 checks passing.
+- Added `app/bible/[bookId].tsx` — chapter picker + verse list reader,
+  with per-verse favoriting (star icon, guest-safe no-op on 401). Wired
+  the book cards on the Bible tab to navigate here.
+- Verified the whole app compiles and bundles: `tsc --noEmit` is clean
+  across `mobile/`, and `npx expo export --platform ios` bundles every
+  screen/i18n/icon with zero errors.
+
+**Next up:**
+- Wire real push notifications (schema already supports it).
+- Manual QA on a device/simulator (this sandbox has no mobile simulator).
+
+**Notes:**
+- Swahili stays the default/fallback language everywhere; every new
+  string was added to both `sw.json` and `en.json`.
+- Guests can browse Bible/prayers/hymns/dictionary without an account;
+  notes (Shajara) and favorites require login and redirect to
+  `auth/login` on a 401.
+
+---
+
 ## 2026-08-14 — Excel progress & payment tracker
 
 **Status:** Step 3 of 4 (Tracker) complete.
