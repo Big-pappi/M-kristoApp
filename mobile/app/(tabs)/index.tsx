@@ -1,13 +1,13 @@
 import { Ionicons } from "@expo/vector-icons"
-import { Link } from "expo-router"
+import { Link, useRouter } from "expo-router"
+import { LinearGradient } from "expo-linear-gradient"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { ActivityIndicator, Pressable, StyleSheet, Text, View } from "react-native"
 
 import { getVerseOfTheDay, type VerseOfDay } from "../../src/api/bible"
-import { Card } from "../../src/components/Card"
+import { AppHeader } from "../../src/components/AppHeader"
 import { Screen } from "../../src/components/Screen"
-import { SectionHeader } from "../../src/components/SectionHeader"
 import { useTheme } from "../../src/theme/useTheme"
 
 const QUICK_LINKS = [
@@ -18,7 +18,8 @@ const QUICK_LINKS = [
 
 export default function HomeScreen() {
   const { t, i18n } = useTranslation()
-  const { colors, spacing, radius } = useTheme()
+  const { colors, spacing, radius, type, gradients, elevation } = useTheme()
+  const router = useRouter()
   const [verse, setVerse] = useState<VerseOfDay | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -35,79 +36,188 @@ export default function HomeScreen() {
   }, [])
 
   const isEnglish = i18n.language === "en"
+  const verseText = verse && (isEnglish && verse.text_en ? verse.text_en : verse.text_sw)
+  const verseRef = verse && (isEnglish && verse.reference_en ? verse.reference_en : verse.reference_sw)
 
   return (
-    <Screen>
-      <Text style={[styles.greeting, { color: colors.textMuted }]}>{t("home.greeting")}</Text>
-      <Text style={[styles.appName, { color: colors.text }]}>{t("common.appName")}</Text>
-
-      <Card
-        style={{
-          marginTop: spacing.lg,
-          backgroundColor: colors.primary,
-          borderColor: colors.primary,
-        }}
+    <Screen header={<AppHeader eyebrow={t("home.greeting")} title={t("common.appName")} />}>
+      {/* Verse of the day hero */}
+      <LinearGradient
+        colors={gradients.hero}
+        start={{ x: 0, y: 0 }}
+        end={{ x: 1, y: 1 }}
+        style={[styles.verseCard, { borderRadius: radius.xl }, elevation.md]}
       >
-        <View style={styles.verseHeaderRow}>
-          <Ionicons name="star" size={18} color={colors.accent} />
-          <Text style={[styles.verseLabel, { color: colors.primaryForeground }]}>
-            {t("home.verseOfDay")}
-          </Text>
+        <View style={styles.verseTop}>
+          <View style={styles.verseBadge}>
+            <Ionicons name="sparkles" size={13} color="#F4D68A" />
+            <Text style={styles.verseBadgeText}>{t("home.verseOfDay")}</Text>
+          </View>
+          <Text style={styles.verseDate}>{t("common.today")}</Text>
         </View>
 
         {loading ? (
-          <ActivityIndicator color={colors.primaryForeground} style={{ marginTop: spacing.md }} />
+          <ActivityIndicator color="#FFFFFF" style={{ marginTop: spacing.lg }} />
         ) : error || !verse ? (
-          <Text style={{ color: colors.primaryForeground, marginTop: spacing.sm }}>
-            {t("common.empty")}
-          </Text>
+          <Text style={[styles.verseText, { marginTop: spacing.md }]}>{t("common.empty")}</Text>
         ) : (
           <>
-            <Text
-              style={[styles.verseText, { color: colors.primaryForeground, marginTop: spacing.sm }]}
-            >
-              &ldquo;{isEnglish && verse.text_en ? verse.text_en : verse.text_sw}&rdquo;
+            <Text style={[styles.verseText, { marginTop: spacing.md }]}>
+              {`\u201C${verseText}\u201D`}
             </Text>
-            <Text style={[styles.verseRef, { color: colors.accent, marginTop: spacing.sm }]}>
-              {isEnglish && verse.reference_en ? verse.reference_en : verse.reference_sw}
-            </Text>
+            <Text style={styles.verseRef}>{verseRef}</Text>
+
+            <View style={styles.verseActions}>
+              <Pressable
+                onPress={() =>
+                  router.push({
+                    pathname: "/verse-studio",
+                    params: { text: verseText ?? "", reference: verseRef ?? "" },
+                  })
+                }
+                accessibilityRole="button"
+                style={({ pressed }) => [styles.shareBtn, { opacity: pressed ? 0.85 : 1 }]}
+              >
+                <LinearGradient
+                  colors={gradients.gild}
+                  start={{ x: 0, y: 0 }}
+                  end={{ x: 1, y: 1 }}
+                  style={styles.shareInner}
+                >
+                  <Ionicons name="color-wand" size={15} color="#221B10" />
+                  <Text style={styles.shareText}>{t("home.share")}</Text>
+                </LinearGradient>
+              </Pressable>
+            </View>
           </>
         )}
-      </Card>
+      </LinearGradient>
 
-      <View style={{ marginTop: spacing.xl }}>
-        <SectionHeader title={t("home.quickLinks")} />
-        <View style={styles.quickLinksRow}>
-          {QUICK_LINKS.map((link) => (
-            <Link key={link.key} href={link.href} asChild>
-              <Pressable style={{ flex: 1 }}>
-                <Card
-                  style={{
-                    alignItems: "center",
-                    gap: spacing.xs,
-                    borderRadius: radius.lg,
-                  }}
-                >
-                  <Ionicons name={link.icon} size={26} color={colors.primary} />
-                  <Text style={{ color: colors.text, fontWeight: "600", textAlign: "center" }}>
-                    {t(`home.${link.key}`)}
-                  </Text>
-                </Card>
-              </Pressable>
-            </Link>
-          ))}
+      {/* Open the Bible CTA */}
+      <Pressable
+        onPress={() => router.push("/bible")}
+        accessibilityRole="button"
+        style={({ pressed }) => [
+          styles.readCard,
+          {
+            backgroundColor: colors.surface,
+            borderColor: colors.border,
+            borderRadius: radius.lg,
+            marginTop: spacing.md,
+            opacity: pressed ? 0.9 : 1,
+          },
+          elevation.sm,
+        ]}
+      >
+        <View style={[styles.readIcon, { backgroundColor: colors.primarySoft }]}>
+          <Ionicons name="book" size={22} color={colors.primary} />
         </View>
+        <View style={{ flex: 1 }}>
+          <Text style={[type.heading, { color: colors.text }]}>{t("home.exploreBible")}</Text>
+          <Text style={[type.caption, { color: colors.textMuted, marginTop: 2 }]}>
+            {isEnglish ? "Old & New Testament, 66 books" : "Agano la Kale na Jipya, vitabu 66"}
+          </Text>
+        </View>
+        <Ionicons name="chevron-forward" size={20} color={colors.textMuted} />
+      </Pressable>
+
+      {/* Quick links */}
+      <Text style={[type.overline, { color: colors.textFaint, marginTop: spacing.xl }]}>
+        {t("home.quickLinks")}
+      </Text>
+      <View style={[styles.quickRow, { marginTop: spacing.sm }]}>
+        {QUICK_LINKS.map((link) => (
+          <Link key={link.key} href={link.href} asChild>
+            <Pressable style={{ flex: 1 }}>
+              <View
+                style={[
+                  styles.quickCard,
+                  {
+                    backgroundColor: colors.surface,
+                    borderColor: colors.border,
+                    borderRadius: radius.lg,
+                  },
+                  elevation.sm,
+                ]}
+              >
+                <View style={[styles.quickIcon, { backgroundColor: colors.accentSoft }]}>
+                  <Ionicons name={link.icon} size={22} color={colors.accent} />
+                </View>
+                <Text
+                  style={[type.label, { color: colors.text, textAlign: "center" }]}
+                  numberOfLines={2}
+                >
+                  {t(`home.${link.key}`)}
+                </Text>
+              </View>
+            </Pressable>
+          </Link>
+        ))}
       </View>
     </Screen>
   )
 }
 
 const styles = StyleSheet.create({
-  greeting: { fontSize: 14 },
-  appName: { fontSize: 28, fontWeight: "800", marginTop: 2 },
-  verseHeaderRow: { flexDirection: "row", alignItems: "center", gap: 6 },
-  verseLabel: { fontWeight: "700", fontSize: 14, textTransform: "uppercase", letterSpacing: 0.5 },
-  verseText: { fontSize: 17, lineHeight: 26, fontStyle: "italic" },
-  verseRef: { fontWeight: "700" },
-  quickLinksRow: { flexDirection: "row", gap: 12 },
+  verseCard: { padding: 20, marginTop: 4 },
+  verseTop: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" },
+  verseBadge: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 6,
+    backgroundColor: "rgba(255,255,255,0.12)",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 999,
+  },
+  verseBadgeText: {
+    color: "#F4D68A",
+    fontSize: 11,
+    fontWeight: "800",
+    letterSpacing: 1,
+    textTransform: "uppercase",
+  },
+  verseDate: { color: "rgba(255,255,255,0.7)", fontSize: 12, fontWeight: "600" },
+  verseText: { color: "#FFFFFF", fontSize: 20, lineHeight: 31, fontWeight: "500" },
+  verseRef: { color: "#F4D68A", fontSize: 14, fontWeight: "800", marginTop: 12, letterSpacing: 0.5 },
+  verseActions: { flexDirection: "row", marginTop: 18 },
+  shareBtn: { overflow: "hidden", borderRadius: 999 },
+  shareInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 8,
+    paddingVertical: 11,
+    paddingHorizontal: 18,
+    borderRadius: 999,
+  },
+  shareText: { color: "#221B10", fontWeight: "800", fontSize: 14 },
+  readCard: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 14,
+    padding: 16,
+    borderWidth: 1,
+  },
+  readIcon: {
+    width: 46,
+    height: 46,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  quickRow: { flexDirection: "row", gap: 10 },
+  quickCard: {
+    alignItems: "center",
+    gap: 10,
+    paddingVertical: 18,
+    paddingHorizontal: 8,
+    borderWidth: 1,
+  },
+  quickIcon: {
+    width: 46,
+    height: 46,
+    borderRadius: 14,
+    alignItems: "center",
+    justifyContent: "center",
+  },
 })

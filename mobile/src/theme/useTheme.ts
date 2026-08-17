@@ -1,6 +1,6 @@
 import { useColorScheme } from "react-native"
 
-import { colors, radius, spacing } from "./colors"
+import { colors, elevation, gradients, radius, spacing, type } from "./colors"
 
 /**
  * Resolves the active color scheme (light/dark) into design tokens.
@@ -13,8 +13,12 @@ export function useTheme() {
   const mode = scheme === "dark" ? "dark" : "light"
   return {
     mode,
+    isDark: mode === "dark",
     colors: colors[mode],
+    gradients: gradients[mode],
     spacing,
     radius,
+    elevation,
+    type,
   }
 }
