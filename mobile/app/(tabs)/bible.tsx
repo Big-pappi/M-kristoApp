@@ -3,7 +3,7 @@ import { useTranslation } from "react-i18next"
 import { ActivityIndicator, FlatList, Pressable, StyleSheet, Text, TextInput, View } from "react-native"
 import { useRouter } from "expo-router"
 
-import { listBooks, type Book } from "../../src/api/bible"
+import { getLocalBooks, type Book } from "../../src/api/bible"
 import { Card } from "../../src/components/Card"
 import { Screen } from "../../src/components/Screen"
 import { useTheme } from "../../src/theme/useTheme"
@@ -19,7 +19,7 @@ export default function BibleScreen() {
   const [query, setQuery] = useState("")
 
   useEffect(() => {
-    listBooks()
+    getLocalBooks()
       .then(setBooks)
       .finally(() => setLoading(false))
   }, [])

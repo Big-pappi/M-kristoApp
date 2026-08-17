@@ -5,10 +5,15 @@ import { Ionicons } from "@expo/vector-icons"
 import { Stack, useLocalSearchParams } from "expo-router"
 
 import { addFavorite, removeFavorite, listFavorites } from "../../src/api/favorites"
-import { listBooks, listVerses, type Book, type Verse } from "../../src/api/bible"
+import { getLocalBooks, getLocalBookData, type Book, type Chapter } from "../../src/api/bible"
 import { ApiError } from "../../src/api/client"
 import { Screen } from "../../src/components/Screen"
 import { useTheme } from "../../src/theme/useTheme"
+
+type LocalVerse = {
+  verse: string
+  text: string
+}
 
 export default function ChapterReaderScreen() {
   const { t, i18n } = useTranslation()
@@ -20,13 +25,14 @@ export default function ChapterReaderScreen() {
   }>()
 
   const [book, setBook] = useState<Book | null>(null)
+  const [bookData, setBookData] = useState<Chapter[] | null>(null)
   const [chapter, setChapter] = useState(Number(chapterParam) || 1)
-  const [verses, setVerses] = useState<Verse[]>([])
+  const [verses, setVerses] = useState<LocalVerse[]>([])
   const [loading, setLoading] = useState(true)
   const [favoriteIds, setFavoriteIds] = useState<Record<string, string>>({})
 
   useEffect(() => {
-    listBooks().then((books) => {
+    getLocalBooks().then((books) => {
       const found = books.find((b) => b.id === bookId) ?? null
       setBook(found)
     })
@@ -35,8 +41,14 @@ export default function ChapterReaderScreen() {
   useEffect(() => {
     if (!bookId) return
     setLoading(true)
-    listVerses(bookId, chapter)
-      .then(setVerses)
+    getLocalBookData(bookId)
+      .then((data) => {
+        if (data) {
+          setBookData(data.chapters)
+          const chapterData = data.chapters.find((c) => c.chapter === String(chapter))
+          setVerses(chapterData?.verses || [])
+        }
+      })
       .finally(() => setLoading(false))
   }, [bookId, chapter])
 
@@ -61,19 +73,21 @@ export default function ChapterReaderScreen() {
     [chapterCount],
   )
 
-  async function toggleFavorite(verse: Verse) {
-    const existingId = favoriteIds[verse.id]
+  async function toggleFavorite(verse: LocalVerse) {
+    // Generate a unique ID for local verses
+    const verseId = `${bookId}-${chapter}-${verse.verse}`
+    const existingId = favoriteIds[verseId]
     try {
       if (existingId) {
         await removeFavorite(existingId)
         setFavoriteIds((prev) => {
           const next = { ...prev }
-          delete next[verse.id]
+          delete next[verseId]
           return next
         })
       } else {
-        const fav = await addFavorite({ content_type: "verse", content_id: verse.id })
-        setFavoriteIds((prev) => ({ ...prev, [verse.id]: fav.id }))
+        const fav = await addFavorite({ content_type: "verse", content_id: verseId })
+        setFavoriteIds((prev) => ({ ...prev, [verseId]: fav.id }))
       }
     } catch (err) {
       if (!(err instanceof ApiError && err.status === 401)) throw err
@@ -119,17 +133,17 @@ export default function ChapterReaderScreen() {
       ) : (
         <FlatList
           data={verses}
-          keyExtractor={(v) => v.id}
+          keyExtractor={(v, index) => `${chapter}-${index}`}
           contentContainerStyle={{ paddingTop: spacing.md, paddingBottom: spacing.xl }}
           renderItem={({ item: verse }) => {
-            const text = isEnglish && verse.text_en ? verse.text_en : verse.text_sw
-            const isFavorite = Boolean(favoriteIds[verse.id])
+            const verseId = `${bookId}-${chapter}-${verse.verse}`
+            const isFavorite = Boolean(favoriteIds[verseId])
             return (
               <View style={styles.verseRow}>
                 <Text style={[styles.verseNumber, { color: colors.accent }]}>
-                  {verse.verse_number}
+                  {verse.verse}
                 </Text>
-                <Text style={[styles.verseText, { color: colors.text }]}>{text}</Text>
+                <Text style={[styles.verseText, { color: colors.text }]}>{verse.text}</Text>
                 <Pressable onPress={() => toggleFavorite(verse)} hitSlop={8}>
                   <Ionicons
                     name={isFavorite ? "star" : "star-outline"}
