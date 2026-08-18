@@ -12,8 +12,6 @@ import { useTheme } from "../../src/theme/useTheme"
 
 const QUICK_LINKS = [
   { key: "dictionary", icon: "book-outline" as const, href: "/dictionary" },
-  { key: "hymns", icon: "musical-notes-outline" as const, href: "/hymns" },
-  { key: "devotion", icon: "sunny-outline" as const, href: "/devotion" },
 ] as const
 
 export default function HomeScreen() {
