@@ -5,6 +5,7 @@ import { Ionicons } from "@expo/vector-icons"
 import { Stack } from "expo-router"
 
 import { listDictionary, searchDictionary, type DictionaryTerm } from "../src/api/dictionary"
+import { AppHeader } from "../src/components/AppHeader"
 import { Card } from "../src/components/Card"
 import { Screen } from "../src/components/Screen"
 import { useTheme } from "../src/theme/useTheme"
@@ -36,9 +37,14 @@ export default function DictionaryScreen() {
   }, [query])
 
   return (
-    <Screen>
-      <Stack.Screen options={{ headerShown: true, title: t("dictionary.title") }} />
-
+    <Screen
+      header={
+        <>
+          <Stack.Screen options={{ headerShown: false }} />
+          <AppHeader back eyebrow={t("common.appName")} title={t("dictionary.title")} />
+        </>
+      }
+    >
       <View
         style={[
           styles.searchBox,

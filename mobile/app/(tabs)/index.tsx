@@ -1,5 +1,5 @@
 import { Ionicons } from "@expo/vector-icons"
-import { Link, useRouter } from "expo-router"
+import { useRouter } from "expo-router"
 import { LinearGradient } from "expo-linear-gradient"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
@@ -9,15 +9,28 @@ import { getVerseOfTheDay, type VerseOfDay } from "../../src/api/bible"
 import { AppHeader } from "../../src/components/AppHeader"
 import { Screen } from "../../src/components/Screen"
 import { useTheme } from "../../src/theme/useTheme"
+import { useProfile } from "../../src/hooks/useProfile"
+import { usePremium } from "../../src/subscription/usePremium"
 
-const QUICK_LINKS = [
-  { key: "dictionary", icon: "book-outline" as const, href: "/dictionary" },
-] as const
+type QuickLink = {
+  key: "hymns" | "devotion" | "dictionary"
+  icon: keyof typeof Ionicons.glyphMap
+  href: string
+  premium?: boolean
+}
+
+const QUICK_LINKS: QuickLink[] = [
+  { key: "hymns", icon: "musical-notes", href: "/hymns", premium: true },
+  { key: "devotion", icon: "sunny", href: "/devotion" },
+  { key: "dictionary", icon: "book-outline", href: "/dictionary" },
+]
 
 export default function HomeScreen() {
   const { t, i18n } = useTranslation()
   const { colors, spacing, radius, type, gradients, elevation } = useTheme()
   const router = useRouter()
+  const { firstName } = useProfile()
+  const { isPremium } = usePremium()
   const [verse, setVerse] = useState<VerseOfDay | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
@@ -38,7 +51,9 @@ export default function HomeScreen() {
   const verseRef = verse && (isEnglish && verse.reference_en ? verse.reference_en : verse.reference_sw)
 
   return (
-    <Screen header={<AppHeader eyebrow={t("home.greeting")} title={t("common.appName")} />}>
+    <Screen
+      header={<AppHeader eyebrow={t("home.greeting")} title={firstName ?? t("common.appName")} />}
+    >
       {/* Verse of the day hero */}
       <LinearGradient
         colors={gradients.hero}
@@ -91,6 +106,33 @@ export default function HomeScreen() {
         )}
       </LinearGradient>
 
+      {/* Membership banner — only for free members */}
+      {!isPremium ? (
+        <Pressable
+          onPress={() => router.push("/subscription")}
+          accessibilityRole="button"
+          style={({ pressed }) => [styles.premiumBanner, { opacity: pressed ? 0.92 : 1, marginTop: spacing.md }]}
+        >
+          <LinearGradient
+            colors={gradients.gild}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 0 }}
+            style={[styles.premiumInner, { borderRadius: radius.lg }, elevation.sm]}
+          >
+            <View style={styles.premiumIcon}>
+              <Ionicons name="sparkles" size={20} color="#221B10" />
+            </View>
+            <View style={{ flex: 1 }}>
+              <Text style={styles.premiumTitle}>{t("home.premiumBanner")}</Text>
+              <Text style={styles.premiumBody} numberOfLines={1}>
+                {t("home.premiumBannerBody")}
+              </Text>
+            </View>
+            <Ionicons name="chevron-forward" size={20} color="#221B10" />
+          </LinearGradient>
+        </Pressable>
+      ) : null}
+
       {/* Open the Bible CTA */}
       <Pressable
         onPress={() => router.push("/bible")}
@@ -124,9 +166,15 @@ export default function HomeScreen() {
         {t("home.quickLinks")}
       </Text>
       <View style={[styles.quickRow, { marginTop: spacing.sm }]}>
-        {QUICK_LINKS.map((link) => (
-          <Link key={link.key} href={link.href} asChild>
-            <Pressable style={{ flex: 1 }}>
+        {QUICK_LINKS.map((link) => {
+          const locked = link.premium && !isPremium
+          return (
+            <Pressable
+              key={link.key}
+              onPress={() => router.push((locked ? "/subscription" : link.href) as never)}
+              accessibilityRole="button"
+              style={{ flex: 1 }}
+            >
               <View
                 style={[
                   styles.quickCard,
@@ -138,6 +186,11 @@ export default function HomeScreen() {
                   elevation.sm,
                 ]}
               >
+                {locked ? (
+                  <View style={[styles.lockPill, { backgroundColor: colors.accentSoft }]}>
+                    <Ionicons name="lock-closed" size={11} color={colors.accent} />
+                  </View>
+                ) : null}
                 <View style={[styles.quickIcon, { backgroundColor: colors.accentSoft }]}>
                   <Ionicons name={link.icon} size={22} color={colors.accent} />
                 </View>
@@ -149,8 +202,8 @@ export default function HomeScreen() {
                 </Text>
               </View>
             </Pressable>
-          </Link>
-        ))}
+          )
+        })}
       </View>
     </Screen>
   )
@@ -189,6 +242,23 @@ const styles = StyleSheet.create({
     borderRadius: 999,
   },
   shareText: { color: "#221B10", fontWeight: "800", fontSize: 14 },
+  premiumBanner: { overflow: "hidden" },
+  premiumInner: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    padding: 14,
+  },
+  premiumIcon: {
+    width: 40,
+    height: 40,
+    borderRadius: 12,
+    backgroundColor: "rgba(255,255,255,0.35)",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  premiumTitle: { color: "#221B10", fontWeight: "800", fontSize: 15 },
+  premiumBody: { color: "rgba(34,27,16,0.75)", fontSize: 12, fontWeight: "600", marginTop: 2 },
   readCard: {
     flexDirection: "row",
     alignItems: "center",
@@ -210,6 +280,17 @@ const styles = StyleSheet.create({
     paddingVertical: 18,
     paddingHorizontal: 8,
     borderWidth: 1,
+    position: "relative",
+  },
+  lockPill: {
+    position: "absolute",
+    top: 8,
+    right: 8,
+    width: 22,
+    height: 22,
+    borderRadius: 11,
+    alignItems: "center",
+    justifyContent: "center",
   },
   quickIcon: {
     width: 46,

@@ -31,7 +31,9 @@
     "hymns": "Tenzi",
     "devotion": "Tafakari",
     "continueReading": "Endelea Kusoma",
-    "exploreBible": "Fungua Biblia"
+    "exploreBible": "Fungua Biblia",
+    "premiumBanner": "Fungua M-Kristo Premium",
+    "premiumBannerBody": "Tenzi, shajara na novena kamili, bila matangazo"
   },
   "notifications": {
     "title": "Arifa",
@@ -126,6 +128,12 @@
     "current": "Mpango wako",
     "restore": "Rejesha malipo",
     "bestValue": "Thamani bora"
+  },
+  "profile": {
+    "title": "Wasifu",
+    "goPremium": "Pata Premium",
+    "memberSince": "Mwanachama tangu",
+    "editProfile": "Hariri Wasifu"
   },
   "settings": {
     "title": "Mipangilio",

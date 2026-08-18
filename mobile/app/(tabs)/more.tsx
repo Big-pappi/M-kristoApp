@@ -4,6 +4,7 @@ import { Ionicons } from "@expo/vector-icons"
 import { useRouter } from "expo-router"
 import { useTranslation } from "react-i18next"
 
+import { AppHeader } from "../../src/components/AppHeader"
 import { Screen } from "../../src/components/Screen"
 import { SectionHeader } from "../../src/components/SectionHeader"
 import { Card } from "../../src/components/Card"
@@ -48,9 +49,7 @@ export default function MoreScreen() {
   }
 
   return (
-    <Screen scroll>
-      <Text style={[styles.title, { color: colors.text }]}>{t("settings.title")}</Text>
-
+    <Screen scroll header={<AppHeader eyebrow={t("common.appName")} title={t("settings.title")} />}>
       <SectionHeader title={t("home.quickLinks")} />
       <Card style={styles.group}>
         <Row
@@ -113,11 +112,6 @@ export default function MoreScreen() {
 }
 
 const styles = StyleSheet.create({
-  title: {
-    fontSize: 22,
-    fontWeight: "700",
-    marginBottom: 8,
-  },
   group: {
     padding: 0,
     marginBottom: 8,

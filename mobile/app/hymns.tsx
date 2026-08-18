@@ -17,6 +17,7 @@ import { Stack, useRouter } from "expo-router"
 import { listHymns, type Hymn } from "../src/api/hymns"
 import { AppHeader } from "../src/components/AppHeader"
 import { Badge } from "../src/components/Badge"
+import { PremiumGate } from "../src/components/PremiumGate"
 import { Screen } from "../src/components/Screen"
 import { useTheme } from "../src/theme/useTheme"
 import { usePremium } from "../src/subscription/usePremium"
@@ -65,6 +66,7 @@ export default function HymnsScreen() {
         </>
       }
     >
+      <PremiumGate unlocked={isPremium} minHeight={420}>
       <View
         style={[
           styles.searchBox,
@@ -133,6 +135,7 @@ export default function HymnsScreen() {
           })}
         </View>
       )}
+      </PremiumGate>
     </Screen>
   )
 }
