@@ -45,16 +45,7 @@ export function AppHeader({ eyebrow, title, back = false, action }: AppHeaderPro
         >
           <Ionicons name="chevron-back" size={20} color={colors.text} />
         </Pressable>
-      ) : (
-        <View
-          style={[
-            styles.mark,
-            { backgroundColor: colors.primary, borderRadius: radius.sm },
-          ]}
-        >
-          <Text style={[styles.markText, { color: colors.accent }]}>M</Text>
-        </View>
-      )}
+      ) : null}
 
       <View style={styles.titleBlock}>
         {eyebrow ? (
@@ -121,13 +112,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
   },
-  mark: {
-    width: 40,
-    height: 40,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  markText: { fontWeight: "800", fontSize: 20 },
   badge: {
     position: "absolute",
     top: 2,
