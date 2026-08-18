@@ -31,7 +31,9 @@
     "hymns": "Hymns",
     "devotion": "Devotion",
     "continueReading": "Continue Reading",
-    "exploreBible": "Open the Bible"
+    "exploreBible": "Open the Bible",
+    "premiumBanner": "Unlock M-Kristo Premium",
+    "premiumBannerBody": "Hymns, journal & full novena, ad-free"
   },
   "notifications": {
     "title": "Notifications",
@@ -126,6 +128,12 @@
     "current": "Your plan",
     "restore": "Restore purchase",
     "bestValue": "Best value"
+  },
+  "profile": {
+    "title": "Profile",
+    "goPremium": "Go Premium",
+    "memberSince": "Member since",
+    "editProfile": "Edit Profile"
   },
   "settings": {
     "title": "Settings",

@@ -1,29 +1,39 @@
 import type { ReactNode } from "react"
-import { Pressable, StyleSheet, Text, View } from "react-native"
+import { Image, Pressable, StyleSheet, Text, View } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
 import { useRouter } from "expo-router"
 
 import { useTheme } from "../theme/useTheme"
 import { useNotifications } from "../notifications/useNotifications"
+import { useProfile } from "../hooks/useProfile"
 
 type AppHeaderProps = {
   /** Small overline above the title, e.g. "Bible". */
   eyebrow?: string
   title?: string
-  /** Show a back chevron instead of the app mark. */
+  /** Show a back chevron instead of the user avatar. */
   back?: boolean
+  /**
+   * Show the round user avatar on the left (tap → profile). Defaults to true
+   * on top-level screens; pass `back` for detail screens to get a chevron.
+   */
+  showAvatar?: boolean
   /** Extra control rendered to the left of the bell. */
   action?: ReactNode
 }
 
 /**
- * The single header used across every screen. It owns the notification bell
- * (top-right, app-wide) so the entry point never moves between pages.
+ * The single header used across every screen. It owns the avatar (top-left,
+ * tap → profile) and the notification bell (top-right, app-wide) so the app
+ * chrome never shifts between pages.
  */
-export function AppHeader({ eyebrow, title, back = false, action }: AppHeaderProps) {
+export function AppHeader({ eyebrow, title, back = false, showAvatar = true, action }: AppHeaderProps) {
   const { colors, spacing, radius, type } = useTheme()
   const router = useRouter()
   const { unreadCount } = useNotifications()
+  const { user } = useProfile()
+
+  const avatarUrl = user?.profile_picture_url
 
   return (
     <View style={[styles.row, { paddingHorizontal: spacing.md, paddingBottom: spacing.sm }]}>
@@ -44,6 +54,28 @@ export function AppHeader({ eyebrow, title, back = false, action }: AppHeaderPro
           ]}
         >
           <Ionicons name="chevron-back" size={20} color={colors.text} />
+        </Pressable>
+      ) : showAvatar ? (
+        <Pressable
+          onPress={() => router.push("/profile")}
+          hitSlop={8}
+          accessibilityRole="button"
+          accessibilityLabel="Your profile"
+          style={({ pressed }) => [
+            styles.avatar,
+            {
+              backgroundColor: colors.primarySoft,
+              borderColor: colors.border,
+              borderRadius: radius.full,
+              opacity: pressed ? 0.7 : 1,
+            },
+          ]}
+        >
+          {avatarUrl ? (
+            <Image source={{ uri: avatarUrl }} style={styles.avatarImg} accessibilityIgnoresInvertColors />
+          ) : (
+            <Ionicons name="person" size={20} color={colors.primary} />
+          )}
         </Pressable>
       ) : null}
 
@@ -112,6 +144,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderWidth: 1,
   },
+  avatar: {
+    width: 40,
+    height: 40,
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 1,
+    overflow: "hidden",
+  },
+  avatarImg: { width: "100%", height: "100%" },
   badge: {
     position: "absolute",
     top: 2,

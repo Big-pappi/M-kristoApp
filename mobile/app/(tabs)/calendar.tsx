@@ -12,10 +12,13 @@ import {
 
 import { createNote, getNotesForDate, type Note } from "../../src/api/notes"
 import { ApiError } from "../../src/api/client"
+import { AppHeader } from "../../src/components/AppHeader"
 import { Card } from "../../src/components/Card"
+import { PremiumGate } from "../../src/components/PremiumGate"
 import { Screen } from "../../src/components/Screen"
 import { SectionHeader } from "../../src/components/SectionHeader"
 import { useTheme } from "../../src/theme/useTheme"
+import { usePremium } from "../../src/subscription/usePremium"
 
 function todayIso() {
   return new Date().toISOString().slice(0, 10)
@@ -24,6 +27,7 @@ function todayIso() {
 export default function CalendarScreen() {
   const { t } = useTranslation()
   const { colors, spacing, radius } = useTheme()
+  const { isPremium } = usePremium()
 
   const [date] = useState(todayIso())
   const [notes, setNotes] = useState<Note[]>([])
@@ -64,8 +68,7 @@ export default function CalendarScreen() {
   }
 
   return (
-    <Screen>
-      <Text style={[styles.title, { color: colors.text }]}>{t("calendar.title")}</Text>
+    <Screen header={<AppHeader eyebrow={t("common.appName")} title={t("calendar.title")} />}>
       <Text style={{ color: colors.textMuted, marginTop: 2 }}>{t("common.today")}: {date}</Text>
 
       {needsAuth ? (
@@ -73,7 +76,7 @@ export default function CalendarScreen() {
           <Text style={{ color: colors.text }}>{t("auth.login")}</Text>
         </Card>
       ) : (
-        <>
+        <PremiumGate unlocked={isPremium} minHeight={320}>
           <Card style={{ marginTop: spacing.lg }}>
             <TextInput
               value={draft}
@@ -112,14 +115,13 @@ export default function CalendarScreen() {
               ))
             )}
           </View>
-        </>
+        </PremiumGate>
       )}
     </Screen>
   )
 }
 
 const styles = StyleSheet.create({
-  title: { fontSize: 24, fontWeight: "800" },
   saveButton: {
     marginTop: 12,
     flexDirection: "row",
