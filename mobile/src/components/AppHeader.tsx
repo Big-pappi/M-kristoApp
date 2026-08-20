@@ -134,7 +134,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     gap: 10,
-    paddingTop: 4,
+    paddingTop: 10,
   },
   titleBlock: { flex: 1 },
   iconButton: {
