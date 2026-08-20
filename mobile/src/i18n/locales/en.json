@@ -1,0 +1,149 @@
+{
+  "common": {
+    "appName": "M-Kristo",
+    "loading": "Loading...",
+    "retry": "Retry",
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "close": "Close",
+    "search": "Search",
+    "seeAll": "See All",
+    "error": "Something went wrong",
+    "empty": "Nothing here yet",
+    "today": "Today"
+  },
+  "tabs": {
+    "home": "Home",
+    "bible": "Bible",
+    "prayers": "Prayers",
+    "calendar": "Journal",
+    "more": "More"
+  },
+  "home": {
+    "greeting": "Hello",
+    "verseOfDay": "Verse of the Day",
+    "readMore": "Read More",
+    "share": "Create Image",
+    "quickLinks": "Quick Links",
+    "dictionary": "Bible Dictionary",
+    "hymns": "Hymns",
+    "devotion": "Devotion",
+    "continueReading": "Continue Reading",
+    "exploreBible": "Open the Bible",
+    "premiumBanner": "Unlock M-Kristo Premium",
+    "premiumBannerBody": "Hymns, journal & full novena, ad-free"
+  },
+  "notifications": {
+    "title": "Notifications",
+    "empty": "You're all caught up",
+    "markAllRead": "Mark all read",
+    "unread": "New"
+  },
+  "verseStudio": {
+    "title": "Verse Studio",
+    "subtitle": "Turn a verse into a shareable image",
+    "background": "Background",
+    "style": "Style",
+    "share": "Share",
+    "save": "Save to Gallery",
+    "saved": "Saved to your gallery",
+    "saveFailed": "Could not save the image",
+    "permissionNeeded": "Allow gallery access to save images",
+    "premiumBg": "Member background",
+    "watermark": "M-Kristo"
+  },
+  "premium": {
+    "locked": "Members only",
+    "lockedBody": "Unlock this with an M-Kristo membership.",
+    "unlock": "Unlock with membership",
+    "badge": "Premium",
+    "preview": "Preview",
+    "active": "Membership active"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Sign Up",
+    "phoneNumber": "Phone Number",
+    "password": "Password",
+    "fullName": "Full Name",
+    "sendCode": "Send Code",
+    "verifyCode": "Verify Code",
+    "otpSentTo": "Code sent to {{phone}}",
+    "continueAsGuest": "Continue as Guest"
+  },
+  "bible": {
+    "title": "Holy Bible",
+    "oldTestament": "Old Testament",
+    "newTestament": "New Testament",
+    "chapter": "Chapter",
+    "verse": "Verse",
+    "searchPlaceholder": "Search a verse or word...",
+    "bookmarked": "Bookmarked"
+  },
+  "prayers": {
+    "title": "Prayers",
+    "commonPrayers": "Common Prayers",
+    "novena": "Novena",
+    "ourFather": "Our Father",
+    "hailMary": "Hail Mary",
+    "apostlesCreed": "Apostles' Creed",
+    "rosary": "Rosary"
+  },
+  "devotion": {
+    "title": "Today's Devotion",
+    "nenoLaLeo": "Word of the Day",
+    "somoLaLeo": "Today's Reading",
+    "reflection": "Reflection"
+  },
+  "calendar": {
+    "title": "My Journal",
+    "addNote": "Add Note",
+    "myNotes": "My Notes",
+    "notePlaceholder": "Write your thoughts for today...",
+    "noNotesToday": "No notes today. Write the first one!"
+  },
+  "dictionary": {
+    "title": "Bible Dictionary",
+    "searchPlaceholder": "Search a word...",
+    "meaning": "Meaning",
+    "relatedVerses": "Related Verses"
+  },
+  "hymns": {
+    "title": "Hymns",
+    "searchPlaceholder": "Search a hymn...",
+    "count": "{{count}} hymns"
+  },
+  "subscription": {
+    "title": "Membership",
+    "hero": "Go deeper with M-Kristo",
+    "heroBody": "Unlock every hymn, the full novena, premium verse backgrounds and daily reflections.",
+    "perkHymns": "300+ hymns and full novena",
+    "perkBackgrounds": "Premium verse backgrounds",
+    "perkDevotion": "Complete daily devotions",
+    "perkOffline": "Ad-free, offline reading",
+    "choosePlan": "Choose a plan",
+    "subscribe": "Subscribe",
+    "current": "Your plan",
+    "restore": "Restore purchase",
+    "bestValue": "Best value"
+  },
+  "profile": {
+    "title": "Profile",
+    "goPremium": "Go Premium",
+    "memberSince": "Member since",
+    "editProfile": "Edit Profile"
+  },
+  "settings": {
+    "title": "Settings",
+    "language": "Language",
+    "swahili": "Swahili",
+    "english": "English",
+    "theme": "Theme",
+    "notifications": "Notifications",
+    "account": "Account",
+    "logout": "Logout",
+    "subscription": "Subscription"
+  }
+}

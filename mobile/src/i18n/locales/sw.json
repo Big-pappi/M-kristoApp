@@ -1,0 +1,149 @@
+{
+  "common": {
+    "appName": "M-Kristo",
+    "loading": "Inapakia...",
+    "retry": "Jaribu Tena",
+    "save": "Hifadhi",
+    "cancel": "Ghairi",
+    "delete": "Futa",
+    "edit": "Hariri",
+    "close": "Funga",
+    "search": "Tafuta",
+    "seeAll": "Tazama Yote",
+    "error": "Hitilafu imetokea",
+    "empty": "Hakuna kitu hapa bado",
+    "today": "Leo"
+  },
+  "tabs": {
+    "home": "Nyumbani",
+    "bible": "Biblia",
+    "prayers": "Sala",
+    "calendar": "Shajara",
+    "more": "Zaidi"
+  },
+  "home": {
+    "greeting": "Habari yako",
+    "verseOfDay": "Neno la Leo",
+    "readMore": "Soma Zaidi",
+    "share": "Tengeneza Picha",
+    "quickLinks": "Njia za Haraka",
+    "dictionary": "Kamusi ya Biblia",
+    "hymns": "Tenzi",
+    "devotion": "Tafakari",
+    "continueReading": "Endelea Kusoma",
+    "exploreBible": "Fungua Biblia",
+    "premiumBanner": "Fungua M-Kristo Premium",
+    "premiumBannerBody": "Tenzi, shajara na novena kamili, bila matangazo"
+  },
+  "notifications": {
+    "title": "Arifa",
+    "empty": "Hakuna arifa mpya",
+    "markAllRead": "Soma zote",
+    "unread": "Mpya"
+  },
+  "verseStudio": {
+    "title": "Studio ya Mistari",
+    "subtitle": "Geuza mstari kuwa picha ya kushiriki",
+    "background": "Mandhari",
+    "style": "Mtindo",
+    "share": "Shiriki",
+    "save": "Hifadhi Kwenye Picha",
+    "saved": "Imehifadhiwa kwenye picha zako",
+    "saveFailed": "Imeshindikana kuhifadhi picha",
+    "permissionNeeded": "Ruhusu ufikiaji wa picha ili kuhifadhi",
+    "premiumBg": "Mandhari ya wanachama",
+    "watermark": "M-Kristo"
+  },
+  "premium": {
+    "locked": "Kwa wanachama",
+    "lockedBody": "Fungua hii kwa uanachama wa M-Kristo.",
+    "unlock": "Fungua kwa uanachama",
+    "badge": "Premium",
+    "preview": "Onyesho",
+    "active": "Uanachama hai"
+  },
+  "auth": {
+    "login": "Ingia",
+    "register": "Jisajili",
+    "phoneNumber": "Nambari ya Simu",
+    "password": "Nenosiri",
+    "fullName": "Jina Kamili",
+    "sendCode": "Tuma Msimbo",
+    "verifyCode": "Thibitisha Msimbo",
+    "otpSentTo": "Msimbo umetumwa kwa {{phone}}",
+    "continueAsGuest": "Endelea Bila Kujisajili"
+  },
+  "bible": {
+    "title": "Biblia Takatifu",
+    "oldTestament": "Agano la Kale",
+    "newTestament": "Agano Jipya",
+    "chapter": "Sura",
+    "verse": "Mstari",
+    "searchPlaceholder": "Tafuta mstari au neno...",
+    "bookmarked": "Umewekwa Alama"
+  },
+  "prayers": {
+    "title": "Sala",
+    "commonPrayers": "Sala za Kawaida",
+    "novena": "Novena",
+    "ourFather": "Baba Yetu",
+    "hailMary": "Salamu Maria",
+    "apostlesCreed": "Kanuni ya Mitume",
+    "rosary": "Rozari"
+  },
+  "devotion": {
+    "title": "Tafakari ya Leo",
+    "nenoLaLeo": "Neno la Leo",
+    "somoLaLeo": "Somo la Leo",
+    "reflection": "Tafakari"
+  },
+  "calendar": {
+    "title": "Shajara Yangu",
+    "addNote": "Ongeza Kumbukumbu",
+    "myNotes": "Kumbukumbu Zangu",
+    "notePlaceholder": "Andika mawazo yako ya leo...",
+    "noNotesToday": "Hakuna kumbukumbu leo. Andika la kwanza!"
+  },
+  "dictionary": {
+    "title": "Kamusi ya Biblia",
+    "searchPlaceholder": "Tafuta neno...",
+    "meaning": "Maana",
+    "relatedVerses": "Mistari Inayohusiana"
+  },
+  "hymns": {
+    "title": "Tenzi za Rohoni",
+    "searchPlaceholder": "Tafuta wimbo...",
+    "count": "Tenzi {{count}}"
+  },
+  "subscription": {
+    "title": "Uanachama",
+    "hero": "Nenda mbali zaidi na M-Kristo",
+    "heroBody": "Fungua tenzi zote, novena kamili, mandhari ya mistari na tafakari za kila siku.",
+    "perkHymns": "Tenzi 300+ na novena kamili",
+    "perkBackgrounds": "Mandhari ya mistari ya premium",
+    "perkDevotion": "Tafakari kamili za kila siku",
+    "perkOffline": "Bila matangazo, soma nje ya mtandao",
+    "choosePlan": "Chagua mpango",
+    "subscribe": "Jisajili",
+    "current": "Mpango wako",
+    "restore": "Rejesha malipo",
+    "bestValue": "Thamani bora"
+  },
+  "profile": {
+    "title": "Wasifu",
+    "goPremium": "Pata Premium",
+    "memberSince": "Mwanachama tangu",
+    "editProfile": "Hariri Wasifu"
+  },
+  "settings": {
+    "title": "Mipangilio",
+    "language": "Lugha",
+    "swahili": "Kiswahili",
+    "english": "Kiingereza",
+    "theme": "Mandhari",
+    "notifications": "Arifa",
+    "account": "Akaunti",
+    "logout": "Toka",
+    "subscription": "Usajili"
+  }
+}

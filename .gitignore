@@ -1,0 +1,49 @@
+# Node / Next.js
+node_modules/
+.next/
+.vercel/
+*.tsbuildinfo
+npm-debug.log*
+pnpm-debug.log*
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# Django
+backend/**/migrations/__pycache__/
+backend/db.sqlite3
+backend/staticfiles/
+backend/media/
+
+# Expo / React Native
+mobile/.expo/
+mobile/node_modules/
+mobile/dist/
+mobile/web-build/
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Bible Audio Files (optional - uncomment if files are too large for git)
+# mobile/books/audio/**/*.mp3
+# mobile/books/audio/**/*.wav
+
+# Env files (never commit secrets)
+.env
+.env.local
+.env.development.local
+.env.production.local
+backend/.env
+mobile/.env
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
