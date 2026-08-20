@@ -14,7 +14,7 @@ type ScreenProps = PropsWithChildren<{
 export function Screen({ children, scroll = true, padded = true, header, footer }: ScreenProps) {
   const { colors, spacing } = useTheme()
   const contentStyle = padded
-    ? { paddingHorizontal: spacing.md, paddingBottom: spacing.xxl, paddingTop: spacing.sm }
+    ? { paddingHorizontal: spacing.md, paddingBottom: spacing.xxl + spacing.lg, paddingTop: spacing.md }
     : undefined
 
   return (
