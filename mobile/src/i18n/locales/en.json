@@ -71,7 +71,14 @@
     "sendCode": "Send Code",
     "verifyCode": "Verify Code",
     "otpSentTo": "Code sent to {{phone}}",
-    "continueAsGuest": "Continue as Guest"
+    "continueAsGuest": "Continue as Guest",
+    "welcomeBack": "Welcome back",
+    "loginIntro": "Return to a quieter place for your faith.",
+    "noAccount": "New to M-Kristo?",
+    "beginJourney": "Begin your journey",
+    "registerIntro": "Create your space for daily faith and reflection.",
+    "passwordHint": "Use at least 6 characters.",
+    "haveAccount": "Already have an account?"
   },
   "bible": {
     "title": "Holy Bible",

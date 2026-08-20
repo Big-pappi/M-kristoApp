@@ -71,7 +71,14 @@
     "sendCode": "Tuma Msimbo",
     "verifyCode": "Thibitisha Msimbo",
     "otpSentTo": "Msimbo umetumwa kwa {{phone}}",
-    "continueAsGuest": "Endelea Bila Kujisajili"
+    "continueAsGuest": "Endelea Bila Kujisajili",
+    "welcomeBack": "Karibu tena",
+    "loginIntro": "Rudi kwenye nafasi tulivu ya imani yako.",
+    "noAccount": "Mpya M-Kristo?",
+    "beginJourney": "Anza safari yako",
+    "registerIntro": "Tengeneza nafasi yako ya imani na tafakari za kila siku.",
+    "passwordHint": "Tumia angalau herufi 6.",
+    "haveAccount": "Una akaunti tayari?"
   },
   "bible": {
     "title": "Biblia Takatifu",
