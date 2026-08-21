@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   wrap: { overflow: "hidden", position: "relative" },
   preview: { opacity: 0.85 },
   overlay: {
-    ...StyleSheet.absoluteFill,
+    ...StyleSheet.absoluteFillObject,
     alignItems: "center",
     justifyContent: "center",
     paddingHorizontal: 24,
