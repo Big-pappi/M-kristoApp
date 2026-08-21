@@ -32,4 +32,4 @@ export default function ExploreScreen() {
     <Text style={[type.caption, { color: colors.textFaint, textAlign: "center", marginTop: spacing.lg }]}>Premium reading stays inside the application.</Text>
   </Screen>
 }
-const styles = StyleSheet.create({ membership: { padding: 22 }, grid: { flexDirection: "row", flexWrap: "wrap", gap: 12, marginTop: 12 }, card: { width: "48%", overflow: "hidden", borderWidth: 1 }, image: { width: "100%", height: 112 }, cardBody: { padding: 14, minHeight: 112 } })
+const styles = StyleSheet.create({ membership: { padding: 22 }, grid: { flexDirection: "row", flexWrap: "wrap", justifyContent: "space-between", rowGap: 12, marginTop: 12 }, card: { width: "49%", overflow: "hidden", borderWidth: 1 }, image: { width: "100%", aspectRatio: 1.35 }, cardBody: { padding: 12, minHeight: 108 } })
