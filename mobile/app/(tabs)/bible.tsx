@@ -37,7 +37,7 @@ export default function BibleScreen() {
   const [books, setBooks] = useState<Book[]>([])
   const [loading, setLoading] = useState(true)
   const [query, setQuery] = useState("")
-  const [open, setOpen] = useState<Testament | null>("old")
+  const [open, setOpen] = useState<Testament | null>(null)
   const [showVersionSelector, setShowVersionSelector] = useState(false)
 
   useEffect(() => {

@@ -6,14 +6,14 @@ import { Image, ImageBackground, StyleSheet, Text, View } from "react-native"
 import { SafeAreaProvider } from "react-native-safe-area-context"
 
 import { restoreLanguage } from "../src/i18n"
-import { useTheme } from "../src/theme/useTheme"
+import { restoreTheme, useTheme } from "../src/theme/useTheme"
 
 export default function RootLayout() {
   const { colors } = useTheme()
   const [ready, setReady] = useState(false)
 
   useEffect(() => {
-    restoreLanguage().finally(() => setReady(true))
+    Promise.all([restoreLanguage(), restoreTheme()]).finally(() => setReady(true))
   }, [])
 
   if (!ready) {
