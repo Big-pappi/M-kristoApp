@@ -1,21 +1,35 @@
-import { Ionicons } from "@expo/vector-icons"
 import { Stack, useRouter } from "expo-router"
-import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
+import { Image, Pressable, StyleSheet, Text, View } from "react-native"
 import { AppHeader } from "../../src/components/AppHeader"
 import { Screen } from "../../src/components/Screen"
 import { usePremium } from "../../src/subscription/usePremium"
 import { useTheme } from "../../src/theme/useTheme"
 
-const items = [
-  ["Books", "Guided Christian books", "book-outline"], ["Devotionals", "Daily paths for deeper faith", "sunny-outline"], ["Prayers", "Prayers for every season", "hand-left-outline"], ["Hymns", "Songs of worship", "musical-notes-outline"], ["Courses", "Learn at your own pace", "school-outline"], ["Verse Studio", "Create beautiful verse cards", "color-palette-outline"],
+const resources = [
+  ["Books", "Read inside the app", "books.webp"],
+  ["Devotionals", "A quiet practice for every day", "devotionals.webp"],
+  ["Prayers", "Guided words for every season", "prayers.webp"],
+  ["Hymns", "Songs for worship and reflection", "hymns.webp"],
+  ["Courses", "Grow at your own pace", "courses.webp"],
+  ["Verse Studio", "Create and save verse cards", "verse-studio.webp"],
 ] as const
+
 export default function ExploreScreen() {
-  const { colors, spacing, radius, type } = useTheme(); const router = useRouter(); const { isPremium } = usePremium()
+  const { colors, spacing, radius, type } = useTheme()
+  const router = useRouter()
+  const { isPremium } = usePremium()
   return <Screen scroll header={<><Stack.Screen options={{ headerShown: false }} /><AppHeader title="Explore" /></>}>
-    <View style={[styles.hero, { backgroundColor: colors.primary, borderRadius: radius.lg }]}><Text style={[type.overline, { color: colors.accent }]}>GO DEEPER</Text><Text style={[type.display, { color: colors.primaryForeground, marginTop: 8 }]}>Resources for the road.</Text><Text style={[type.body, { color: colors.primaryForeground, opacity: .72, marginTop: 8 }]}>Books, prayer guides, courses, and worship — kept inside the app.</Text><Pressable onPress={() => router.push("/subscription")} style={[styles.button, { backgroundColor: colors.accent, borderRadius: radius.full }]}><Text style={[type.label, { color: colors.accentForeground }]}>View membership</Text></Pressable></View>
-    <Text style={[type.overline, { color: colors.accent, marginTop: spacing.xl }]}>LIBRARY</Text>
-    <View style={styles.grid}>{items.map(([title, body, icon]) => <Pressable key={title} onPress={() => !isPremium && router.push("/subscription")} style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border, borderRadius: radius.md }]}><View style={[styles.icon, { backgroundColor: colors.surfaceMuted, borderRadius: radius.sm }]}><Ionicons name={icon} size={21} color={colors.accent} /></View><Text style={[type.heading, { color: colors.text, marginTop: 14 }]}>{title}</Text><Text style={[type.caption, { color: colors.textMuted, marginTop: 5 }]}>{body}</Text><View style={styles.bottom}><Text style={[type.overline, { color: isPremium ? colors.success : colors.accent }]}>{isPremium ? "OPEN" : "PREMIUM"}</Text><Ionicons name={isPremium ? "arrow-forward" : "lock-closed-outline"} size={16} color={colors.textMuted} /></View></Pressable>)}</View>
+    <Text style={[type.display, { color: colors.text, marginTop: spacing.md }]}>Explore</Text>
+    <Text style={[type.body, { color: colors.textMuted, marginTop: 6 }]}>Resources to help you read, pray, and grow.</Text>
+    <Pressable onPress={() => router.push("/subscription")} style={[styles.membership, { backgroundColor: colors.primary, borderRadius: radius.lg, marginTop: spacing.lg }]}>
+      <Text style={[type.overline, { color: colors.accent }]}>MEMBERSHIP</Text><Text style={[type.heading, { color: colors.primaryForeground, marginTop: 6 }]}>Go deeper in your faith</Text><Text style={[type.body, { color: colors.primaryForeground, opacity: 0.72, marginTop: 4 }]}>Unlock every book, course, prayer guide, and studio tool.</Text><Text style={[type.label, { color: colors.accent, marginTop: 16 }]}>VIEW PLANS  →</Text>
+    </Pressable>
+    <Text style={[type.overline, { color: colors.text, marginTop: spacing.xl }]}>LIBRARY</Text>
+    <View style={styles.grid}>{resources.map(([title, body, file]) => <Pressable key={title} onPress={() => !isPremium && router.push("/subscription")} style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border, borderRadius: radius.md }]}>
+      <Image source={{ uri: `/images/explore/${file}` }} style={[styles.image, { backgroundColor: colors.surfaceMuted, borderRadius: radius.sm }]} accessibilityLabel={`${title} resource cover`} />
+      <View style={styles.cardBody}><Text style={[type.heading, { color: colors.text }]}>{title}</Text><Text style={[type.caption, { color: colors.textMuted, marginTop: 4 }]}>{body}</Text><Text style={[type.overline, { color: isPremium ? colors.success : colors.accent, marginTop: 14 }]}>{isPremium ? "OPEN" : "PREMIUM  ·  LOCKED"}</Text></View>
+    </Pressable>)}</View>
     <Text style={[type.caption, { color: colors.textFaint, textAlign: "center", marginTop: spacing.lg }]}>Premium reading stays inside the application.</Text>
   </Screen>
 }
-const styles = StyleSheet.create({ hero: { padding: 22 }, button: { alignSelf: "flex-start", paddingHorizontal: 18, paddingVertical: 12, marginTop: 20 }, grid: { flexDirection: "row", flexWrap: "wrap", gap: 12, marginTop: 12 }, card: { width: "48%", minHeight: 166, padding: 15, borderWidth: 1 }, icon: { width: 42, height: 42, alignItems: "center", justifyContent: "center" }, bottom: { marginTop: "auto", paddingTop: 16, flexDirection: "row", justifyContent: "space-between", alignItems: "center" } })
+const styles = StyleSheet.create({ membership: { padding: 22 }, grid: { flexDirection: "row", flexWrap: "wrap", gap: 12, marginTop: 12 }, card: { width: "48%", overflow: "hidden", borderWidth: 1 }, image: { width: "100%", height: 112 }, cardBody: { padding: 14, minHeight: 112 } })
