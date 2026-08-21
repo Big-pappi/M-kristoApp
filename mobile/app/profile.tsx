@@ -1,248 +1,26 @@
-import { useEffect } from "react"
-import { useTranslation } from "react-i18next"
-import { ActivityIndicator, Image, Pressable, StyleSheet, Text, View } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
-import { LinearGradient } from "expo-linear-gradient"
+import { useEffect, useState } from "react"
+import { Alert, Image, Pressable, StyleSheet, Switch, Text, View } from "react-native"
 import { Stack, useRouter } from "expo-router"
-
+import { useTranslation } from "react-i18next"
 import { AppHeader } from "../src/components/AppHeader"
-import { Card } from "../src/components/Card"
 import { Screen } from "../src/components/Screen"
-import { useTheme } from "../src/theme/useTheme"
 import { useProfile } from "../src/hooks/useProfile"
 import { usePremium } from "../src/subscription/usePremium"
-
-function formatMemberSince(iso: string | undefined, isEnglish: boolean) {
-  if (!iso) return null
-  const date = new Date(iso)
-  if (Number.isNaN(date.getTime())) return null
-  return date.toLocaleDateString(isEnglish ? "en-US" : "sw-TZ", {
-    day: "numeric",
-    month: "short",
-    year: "numeric",
-  })
-}
-
+import { logout } from "../src/api/auth"
+import { setLanguage } from "../src/i18n"
+import { useTheme } from "../src/theme/useTheme"
 export default function ProfileScreen() {
-  const { t, i18n } = useTranslation()
-  const { colors, spacing, radius, type, gradients, elevation } = useTheme()
-  const router = useRouter()
-  const isEnglish = i18n.language === "en"
-
-  const { user, loading } = useProfile()
-  const { isPremium } = usePremium()
-
-  useEffect(() => {
-    if (!loading && !user) router.replace("/auth/login")
-  }, [loading, user, router])
-
-  const memberSince = formatMemberSince(user?.created_at, isEnglish)
-
-  return (
-    <Screen
-      header={
-        <>
-          <Stack.Screen options={{ headerShown: false }} />
-          <AppHeader back eyebrow={t("common.appName")} title={t("profile.title")} />
-        </>
-      }
-    >
-      {loading ? (
-        <ActivityIndicator color={colors.primary} style={{ marginTop: spacing.xxl }} />
-      ) : user ? (
-        <>
-          {/* Identity */}
-          <View style={styles.identity}>
-            <View
-              style={[
-                styles.avatar,
-                { backgroundColor: colors.primarySoft, borderColor: colors.border, borderRadius: radius.full },
-              ]}
-            >
-              {user.profile_picture_url ? (
-                <Image
-                  source={{ uri: user.profile_picture_url }}
-                  style={styles.avatarImg}
-                  accessibilityIgnoresInvertColors
-                />
-              ) : (
-                <Ionicons name="person" size={44} color={colors.primary} />
-              )}
-            </View>
-
-            {isPremium ? (
-              <View style={[styles.memberChip, { backgroundColor: colors.accentSoft, borderRadius: radius.full }]}>
-                <Ionicons name="sparkles" size={13} color={colors.accent} />
-                <Text style={[styles.memberChipText, { color: colors.accent }]}>
-                  {t("premium.active")}
-                </Text>
-              </View>
-            ) : (
-              <Pressable
-                onPress={() => router.push("/subscription")}
-                accessibilityRole="button"
-                style={({ pressed }) => [styles.goPremium, { opacity: pressed ? 0.9 : 1 }]}
-              >
-                <LinearGradient
-                  colors={gradients.gild}
-                  start={{ x: 0, y: 0 }}
-                  end={{ x: 1, y: 1 }}
-                  style={[styles.goPremiumInner, { borderRadius: radius.full }]}
-                >
-                  <Ionicons name="sparkles" size={14} color="#221B10" />
-                  <Text style={styles.goPremiumText}>{t("profile.goPremium")}</Text>
-                </LinearGradient>
-              </Pressable>
-            )}
-
-            <Text style={[styles.name, { color: colors.text }]}>{user.full_name}</Text>
-            {memberSince ? (
-              <Text style={[type.caption, { color: colors.textMuted, marginTop: 4 }]}>
-                {t("profile.memberSince")}: {memberSince}
-              </Text>
-            ) : null}
-          </View>
-
-          {/* Contact details */}
-          <Card style={{ marginTop: spacing.lg }}>
-            <DetailRow icon="call" label={t("auth.phoneNumber")} value={user.phone_number} />
-            {user.email ? (
-              <>
-                <View style={[styles.divider, { backgroundColor: colors.border }]} />
-                <DetailRow icon="mail" label="Email" value={user.email} />
-              </>
-            ) : null}
-          </Card>
-
-          {/* Actions */}
-          <View style={{ marginTop: spacing.lg, gap: spacing.sm }}>
-            <ActionRow
-              icon="card"
-              label={t("settings.subscription")}
-              onPress={() => router.push("/subscription")}
-            />
-            <ActionRow
-              icon="settings"
-              label={t("settings.title")}
-              onPress={() => router.push("/more")}
-            />
-          </View>
-        </>
-      ) : null}
-    </Screen>
-  )
+ const { t, i18n } = useTranslation(); const { colors, spacing, radius, type, isDark } = useTheme(); const router = useRouter(); const { user, loading } = useProfile(); const { isPremium } = usePremium(); const [notifications, setNotifications] = useState(true)
+ useEffect(() => { if (!loading && !user) router.replace("/auth/login") }, [loading, user, router])
+ if (!user) return <Screen header={<><Stack.Screen options={{ headerShown: false }} /><AppHeader title={t("tabs.profile")} /></>} />
+ return <Screen scroll header={<><Stack.Screen options={{ headerShown: false }} /><AppHeader eyebrow="Your space" title={t("tabs.profile")} /></>}>
+  <View style={styles.identity}><View style={[styles.avatar, { backgroundColor: colors.accentSoft, borderRadius: radius.full }]}>{user.profile_picture_url ? <Image source={{ uri: user.profile_picture_url }} style={styles.avatarImage} /> : <Text style={[type.title, { color: colors.accent }]}>{user.full_name?.charAt(0) ?? "U"}</Text>}</View><Text style={[type.title, { color: colors.text, marginTop: 12 }]}>{user.full_name}</Text><Text style={[type.caption, { color: colors.textMuted, marginTop: 3 }]}>{user.email || user.phone_number}</Text>{isPremium && <Text style={[type.overline, { color: colors.success, marginTop: 10 }]}>MEMBERSHIP ACTIVE</Text>}</View>
+  {!isPremium && <Pressable onPress={() => router.push("/subscription")} style={[styles.premium, { backgroundColor: colors.primary, borderRadius: radius.md, marginTop: spacing.lg }]}><View style={{ flex: 1 }}><Text style={[type.overline, { color: colors.accent }]}>GO DEEPER</Text><Text style={[type.heading, { color: colors.primaryForeground, marginTop: 4 }]}>Make more room for faith</Text></View><Ionicons name="arrow-forward" size={19} color={colors.primaryForeground} /></Pressable>}
+  <Text style={[type.overline, { color: colors.accent, marginTop: spacing.xl }]}>PREFERENCES</Text><View style={[styles.group, { backgroundColor: colors.surface, borderColor: colors.border, borderRadius: radius.md, marginTop: spacing.sm }]}><Row icon="language-outline" label={t("settings.language")} value={i18n.language === "en" ? "English" : "Swahili"} colors={colors} onPress={() => setLanguage(i18n.language === "en" ? "sw" : "en")} /><Row icon="notifications-outline" label={t("settings.notifications")} colors={colors} right={<Switch value={notifications} onValueChange={setNotifications} trackColor={{ true: colors.accent, false: colors.border }} />} /><Row icon="moon-outline" label={t("settings.theme")} value={isDark ? "Dark" : "Light"} colors={colors} /></View>
+  <Text style={[type.overline, { color: colors.accent, marginTop: spacing.xl }]}>ACCOUNT & APP</Text><View style={[styles.group, { backgroundColor: colors.surface, borderColor: colors.border, borderRadius: radius.md, marginTop: spacing.sm }]}><Row icon="card-outline" label={t("settings.subscription")} colors={colors} onPress={() => router.push("/subscription")} /><Row icon="information-circle-outline" label="About M-Kristo" value="Version 1.0.0" colors={colors} /><Row icon="log-out-outline" label={t("settings.logout")} colors={colors} onPress={async () => { await logout(); Alert.alert(t("settings.logout"), t("common.close")) }} /></View>
+ </Screen>
 }
-
-function DetailRow({
-  icon,
-  label,
-  value,
-}: {
-  icon: keyof typeof Ionicons.glyphMap
-  label: string
-  value: string
-}) {
-  const { colors } = useTheme()
-  return (
-    <View style={styles.detailRow}>
-      <View style={[styles.detailIcon, { backgroundColor: colors.surfaceMuted }]}>
-        <Ionicons name={icon} size={16} color={colors.primary} />
-      </View>
-      <View style={{ flex: 1 }}>
-        <Text style={{ color: colors.textFaint, fontSize: 11, fontWeight: "700", textTransform: "uppercase", letterSpacing: 0.6 }}>
-          {label}
-        </Text>
-        <Text style={{ color: colors.text, fontSize: 15, fontWeight: "600", marginTop: 2 }}>{value}</Text>
-      </View>
-    </View>
-  )
-}
-
-function ActionRow({
-  icon,
-  label,
-  onPress,
-}: {
-  icon: keyof typeof Ionicons.glyphMap
-  label: string
-  onPress: () => void
-}) {
-  const { colors, radius, elevation } = useTheme()
-  return (
-    <Pressable
-      onPress={onPress}
-      accessibilityRole="button"
-      style={({ pressed }) => [
-        styles.actionRow,
-        {
-          backgroundColor: colors.surface,
-          borderColor: colors.border,
-          borderRadius: radius.lg,
-          opacity: pressed ? 0.85 : 1,
-        },
-        elevation.sm,
-      ]}
-    >
-      <View style={[styles.actionIcon, { backgroundColor: colors.primarySoft }]}>
-        <Ionicons name={icon} size={18} color={colors.primary} />
-      </View>
-      <Text style={{ flex: 1, color: colors.text, fontSize: 15, fontWeight: "600" }}>{label}</Text>
-      <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />
-    </Pressable>
-  )
-}
-
-const styles = StyleSheet.create({
-  identity: { alignItems: "center", marginTop: 12 },
-  avatar: {
-    width: 96,
-    height: 96,
-    alignItems: "center",
-    justifyContent: "center",
-    borderWidth: 1,
-    overflow: "hidden",
-  },
-  avatarImg: { width: "100%", height: "100%" },
-  memberChip: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 5,
-    paddingHorizontal: 12,
-    paddingVertical: 6,
-    marginTop: 12,
-  },
-  memberChipText: { fontSize: 12, fontWeight: "800", letterSpacing: 0.5 },
-  goPremium: { overflow: "hidden", marginTop: 12, borderRadius: 999 },
-  goPremiumInner: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-    paddingHorizontal: 18,
-    paddingVertical: 9,
-  },
-  goPremiumText: { color: "#221B10", fontWeight: "800", fontSize: 14 },
-  name: { fontSize: 22, fontWeight: "800", marginTop: 14, letterSpacing: -0.3 },
-  divider: { height: 1, marginVertical: 12 },
-  detailRow: { flexDirection: "row", alignItems: "center", gap: 12 },
-  detailIcon: {
-    width: 34,
-    height: 34,
-    borderRadius: 17,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  actionRow: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    padding: 14,
-    borderWidth: 1,
-  },
-  actionIcon: {
-    width: 36,
-    height: 36,
-    borderRadius: 12,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-})
+function Row({ icon, label, value, right, colors, onPress }: { icon: keyof typeof Ionicons.glyphMap; label: string; value?: string; right?: React.ReactNode; colors: ReturnType<typeof useTheme>["colors"]; onPress?: () => void }) { return <Pressable onPress={onPress} disabled={!onPress && !right} style={styles.row}><View style={[styles.rowIcon, { backgroundColor: colors.surfaceMuted, borderRadius: 8 }]}><Ionicons name={icon} size={18} color={colors.accent} /></View><Text style={[styles.rowLabel, { color: colors.text }]}>{label}</Text>{value && <Text style={[type.caption, { color: colors.textMuted }]}>{value}</Text>}{right}</Pressable> }
+const type = { caption: { fontSize: 12 } }
+const styles = StyleSheet.create({ identity: { alignItems: "center" }, avatar: { width: 76, height: 76, alignItems: "center", justifyContent: "center" }, avatarImage: { width: "100%", height: "100%", borderRadius: 999 }, premium: { padding: 16, flexDirection: "row", alignItems: "center" }, group: { borderWidth: 1, overflow: "hidden" }, row: { minHeight: 58, flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 14, borderBottomWidth: 1, borderBottomColor: "rgba(128,118,100,0.18)" }, rowIcon: { width: 32, height: 32, alignItems: "center", justifyContent: "center" }, rowLabel: { flex: 1, fontSize: 15, fontWeight: "600" } })

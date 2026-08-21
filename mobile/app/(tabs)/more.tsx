@@ -1,143 +1,20 @@
-import { useState } from "react"
-import { Alert, Pressable, StyleSheet, Switch, Text, View } from "react-native"
 import { Ionicons } from "@expo/vector-icons"
+import { useState } from "react"
+import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native"
 import { useRouter } from "expo-router"
-import { useTranslation } from "react-i18next"
-
 import { AppHeader } from "../../src/components/AppHeader"
-import { Screen } from "../../src/components/Screen"
-import { SectionHeader } from "../../src/components/SectionHeader"
 import { Card } from "../../src/components/Card"
+import { Screen } from "../../src/components/Screen"
 import { useTheme } from "../../src/theme/useTheme"
-import { setLanguage } from "../../src/i18n"
-import { logout } from "../../src/api/auth"
-
-type RowProps = {
-  icon: keyof typeof Ionicons.glyphMap
-  label: string
-  onPress?: () => void
-  right?: React.ReactNode
+const topics = ["All", "Devotionals", "Prayer", "Wisdom"]
+export default function ExploreScreen() {
+ const { colors, spacing, radius, type } = useTheme(); const router = useRouter(); const [selected, setSelected] = useState("All")
+ return <Screen scroll header={<AppHeader eyebrow="Find something to carry" title="Explore" />}>
+  <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 8 }}><>{topics.map((topic) => <Pressable key={topic} onPress={() => setSelected(topic)} style={[styles.filter, { backgroundColor: selected === topic ? colors.primary : colors.surface, borderColor: colors.border, borderRadius: radius.full }]}><Text style={[type.label, { color: selected === topic ? colors.primaryForeground : colors.text }]}>{topic}</Text></Pressable>)}</></ScrollView>
+  <Text style={[type.title, { color: colors.text, marginTop: spacing.xl }]}>For this season</Text>
+  <Card style={{ padding: 0, overflow: "hidden", marginTop: spacing.md }}><View style={[styles.feature, { backgroundColor: colors.accentSoft }]}><Ionicons name="leaf-outline" size={34} color={colors.accent} /><Text style={[type.title, { color: colors.text, marginTop: 22 }]}>A slower way to read</Text><Text style={[type.body, { color: colors.textMuted, marginTop: 8 }]}>Short reflections for ordinary days, rooted in Scripture.</Text><Pressable onPress={() => router.push("/devotion")} style={[styles.featureButton, { backgroundColor: colors.primary, borderRadius: 6 }]}><Text style={{ color: colors.primaryForeground, fontWeight: "800" }}>START READING</Text><Ionicons name="arrow-forward" size={17} color={colors.primaryForeground} /></Pressable></View></Card>
+  <View style={[styles.sectionHead, { marginTop: spacing.xl }]}><Text style={[type.title, { color: colors.text }]}>Library</Text><Text style={[type.label, { color: colors.accent }]}>VIEW ALL</Text></View>
+  {[{ icon: "library-outline" as const, title: "Bible Dictionary", detail: "Understand the words behind the Word", route: "/dictionary" }, { icon: "musical-notes-outline" as const, title: "Hymns", detail: "Songs for quiet and gathered moments", route: "/hymns" }, { icon: "bookmark-outline" as const, title: "Saved passages", detail: "Return to what spoke to you", route: "/favorites" }].map((item) => <Pressable key={item.title} onPress={() => router.push(item.route as never)} style={[styles.libraryRow, { borderBottomColor: colors.border }]}><View style={[styles.libraryIcon, { backgroundColor: colors.surfaceMuted, borderRadius: radius.sm }]}><Ionicons name={item.icon} size={20} color={colors.accent} /></View><View style={{ flex: 1 }}><Text style={[type.heading, { color: colors.text }]}>{item.title}</Text><Text style={[type.caption, { color: colors.textMuted, marginTop: 3 }]}>{item.detail}</Text></View><Ionicons name="chevron-forward" size={18} color={colors.textFaint} /></Pressable>)}
+ </Screen>
 }
-
-function Row({ icon, label, onPress, right }: RowProps) {
-  const { colors } = useTheme()
-  return (
-    <Pressable
-      onPress={onPress}
-      disabled={!onPress}
-      style={({ pressed }) => [styles.row, { opacity: pressed ? 0.6 : 1 }]}
-    >
-      <View style={[styles.rowIcon, { backgroundColor: colors.surfaceMuted }]}>
-        <Ionicons name={icon} size={18} color={colors.primary} />
-      </View>
-      <Text style={[styles.rowLabel, { color: colors.text }]}>{label}</Text>
-      {right ?? <Ionicons name="chevron-forward" size={18} color={colors.textMuted} />}
-    </Pressable>
-  )
-}
-
-export default function MoreScreen() {
-  const { t, i18n } = useTranslation()
-  const { colors } = useTheme()
-  const router = useRouter()
-  const [notificationsOn, setNotificationsOn] = useState(true)
-  const isSwahili = i18n.language === "sw"
-
-  async function handleLogout() {
-    await logout()
-    Alert.alert(t("settings.logout"), t("common.close"))
-  }
-
-  return (
-    <Screen scroll header={<AppHeader eyebrow={t("common.appName")} title={t("settings.title")} />}>
-      <SectionHeader title={t("home.quickLinks")} />
-      <Card style={styles.group}>
-        <Row
-          icon="library"
-          label={t("dictionary.title")}
-          onPress={() => router.push("/dictionary")}
-        />
-        <View style={[styles.divider, { backgroundColor: colors.border }]} />
-        <Row icon="musical-notes" label={t("hymns.title")} onPress={() => router.push("/hymns")} />
-        <View style={[styles.divider, { backgroundColor: colors.border }]} />
-        <Row
-          icon="star"
-          label={t("bible.bookmarked")}
-          onPress={() => router.push("/favorites")}
-        />
-      </Card>
-
-      <SectionHeader title={t("settings.language")} />
-      <Card style={styles.group}>
-        <Row
-          icon="language"
-          label={t("settings.swahili")}
-          onPress={() => setLanguage("sw")}
-          right={isSwahili ? <Ionicons name="checkmark-circle" size={20} color={colors.primary} /> : null}
-        />
-        <View style={[styles.divider, { backgroundColor: colors.border }]} />
-        <Row
-          icon="language"
-          label={t("settings.english")}
-          onPress={() => setLanguage("en")}
-          right={!isSwahili ? <Ionicons name="checkmark-circle" size={20} color={colors.primary} /> : null}
-        />
-      </Card>
-
-      <SectionHeader title={t("settings.notifications")} />
-      <Card style={styles.group}>
-        <Row
-          icon="notifications"
-          label={t("settings.notifications")}
-          right={
-            <Switch
-              value={notificationsOn}
-              onValueChange={setNotificationsOn}
-              trackColor={{ true: colors.primary, false: colors.border }}
-            />
-          }
-        />
-      </Card>
-
-      <SectionHeader title={t("settings.account")} />
-      <Card style={styles.group}>
-        <Row icon="person" label={t("settings.account")} onPress={() => router.push("/profile")} />
-        <View style={[styles.divider, { backgroundColor: colors.border }]} />
-        <Row icon="card" label={t("settings.subscription")} onPress={() => router.push("/subscription")} />
-        <View style={[styles.divider, { backgroundColor: colors.border }]} />
-        <Row icon="log-out" label={t("settings.logout")} onPress={handleLogout} />
-      </Card>
-    </Screen>
-  )
-}
-
-const styles = StyleSheet.create({
-  group: {
-    padding: 0,
-    marginBottom: 8,
-    overflow: "hidden",
-  },
-  row: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 12,
-    paddingHorizontal: 14,
-    paddingVertical: 14,
-  },
-  rowIcon: {
-    width: 32,
-    height: 32,
-    borderRadius: 16,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  rowLabel: {
-    flex: 1,
-    fontSize: 15,
-    fontWeight: "500",
-  },
-  divider: {
-    height: 1,
-    marginLeft: 58,
-  },
-})
+const styles = StyleSheet.create({ filter: { paddingHorizontal: 15, paddingVertical: 10, borderWidth: 1 }, feature: { padding: 20, minHeight: 238 }, featureButton: { marginTop: 22, paddingVertical: 13, paddingHorizontal: 15, flexDirection: "row", alignItems: "center", justifyContent: "space-between" }, sectionHead: { flexDirection: "row", justifyContent: "space-between", alignItems: "center" }, libraryRow: { flexDirection: "row", alignItems: "center", gap: 12, minHeight: 76, borderBottomWidth: 1 }, libraryIcon: { width: 40, height: 40, alignItems: "center", justifyContent: "center" } })

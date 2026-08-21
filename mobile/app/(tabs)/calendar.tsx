@@ -1,133 +1,29 @@
 import { Ionicons } from "@expo/vector-icons"
 import { useCallback, useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
-import {
-  ActivityIndicator,
-  Pressable,
-  StyleSheet,
-  Text,
-  TextInput,
-  View,
-} from "react-native"
-
+import { ActivityIndicator, Pressable, StyleSheet, Text, TextInput, View } from "react-native"
 import { createNote, getNotesForDate, type Note } from "../../src/api/notes"
 import { ApiError } from "../../src/api/client"
 import { AppHeader } from "../../src/components/AppHeader"
 import { Card } from "../../src/components/Card"
 import { PremiumGate } from "../../src/components/PremiumGate"
 import { Screen } from "../../src/components/Screen"
-import { SectionHeader } from "../../src/components/SectionHeader"
-import { useTheme } from "../../src/theme/useTheme"
 import { usePremium } from "../../src/subscription/usePremium"
-
-function todayIso() {
-  return new Date().toISOString().slice(0, 10)
+import { useTheme } from "../../src/theme/useTheme"
+function todayIso() { return new Date().toISOString().slice(0, 10) }
+export default function JournalScreen() {
+  const { t } = useTranslation(); const { colors, spacing, radius, type } = useTheme(); const { isPremium } = usePremium(); const date = todayIso()
+  const [notes, setNotes] = useState<Note[]>([]); const [draft, setDraft] = useState(""); const [loading, setLoading] = useState(true); const [saving, setSaving] = useState(false); const [needsAuth, setNeedsAuth] = useState(false)
+  const load = useCallback(() => { setLoading(true); getNotesForDate(date).then(setNotes).catch((err) => { if (err instanceof ApiError && err.status === 401) setNeedsAuth(true) }).finally(() => setLoading(false)) }, [date])
+  useEffect(() => { load() }, [load])
+  async function save() { if (!draft.trim()) return; setSaving(true); try { const note = await createNote({ note_date: date, body: draft.trim() }); setNotes((prev) => [note, ...prev]); setDraft("") } finally { setSaving(false) } }
+  const days = ["M", "T", "W", "T", "F", "S", "S"]
+  return <Screen scroll header={<AppHeader eyebrow="A record of your walk" title={t("tabs.journal")} />}>
+    <View style={styles.dateRow}><View><Text style={[type.overline, { color: colors.accent }]}>TODAY</Text><Text style={[type.title, { color: colors.text, marginTop: 4 }]}>{date}</Text></View><View style={[styles.progressRing, { borderColor: colors.accent }]}><Text style={[type.heading, { color: colors.text }]}>1/3</Text></View></View>
+    <Text style={[type.body, { color: colors.textMuted, marginTop: 5 }]}>Keep the practices that help you stay close.</Text>
+    <Card style={{ marginTop: spacing.lg, padding: 0, overflow: "hidden" }}><Text style={[type.heading, { color: colors.text, padding: 16 }]}>Daily rhythm</Text>{[{ label: "Read a Bible passage", done: true }, { label: "Prayer or quiet time", done: false }, { label: "Write a reflection", done: false }].map((item) => <View key={item.label} style={[styles.routine, { borderTopColor: colors.border }]}><Ionicons name={item.done ? "checkmark-circle" : "ellipse-outline"} size={23} color={item.done ? colors.success : colors.textFaint} /><Text style={[type.body, { color: colors.text, flex: 1 }]}>{item.label}</Text><Text style={[type.caption, { color: colors.textMuted }]}>{item.done ? "Done" : "Open"}</Text></View>)}</Card>
+    <Text style={[type.overline, { color: colors.accent, marginTop: spacing.xl }]}>THIS WEEK</Text><Card style={{ marginTop: spacing.sm }}><View style={styles.week}>{days.map((day, i) => <View key={`${day}-${i}`} style={styles.day}><Text style={[type.caption, { color: colors.textMuted }]}>{day}</Text><View style={[styles.dayDot, { backgroundColor: i < 3 ? colors.success : colors.surfaceMuted }]}>{i < 3 && <Ionicons name="checkmark" size={12} color={colors.primaryForeground} />}</View><Text style={[type.caption, { color: colors.text }]}>{18 + i}</Text></View>)}</View></Card>
+    {needsAuth ? <Card style={{ marginTop: spacing.lg }}><Text style={{ color: colors.text }}>{t("auth.login")}</Text></Card> : <PremiumGate unlocked={isPremium} minHeight={260}><View style={[styles.noteBox, { backgroundColor: colors.surface, borderColor: colors.border, borderRadius: radius.md, marginTop: spacing.lg }]}><Text style={[type.heading, { color: colors.text }]}>Today&apos;s reflection</Text><TextInput value={draft} onChangeText={setDraft} placeholder={t("calendar.notePlaceholder")} placeholderTextColor={colors.textMuted} multiline style={[type.body, { color: colors.text, minHeight: 82, textAlignVertical: "top", marginTop: 12 }]} /><Pressable onPress={save} disabled={saving || !draft.trim()} style={[styles.save, { backgroundColor: colors.primary, borderRadius: 6, opacity: saving || !draft.trim() ? 0.5 : 1 }]}><Ionicons name="add" size={17} color={colors.primaryForeground} /><Text style={{ color: colors.primaryForeground, fontWeight: "800" }}>SAVE NOTE</Text></Pressable></View><Text style={[type.overline, { color: colors.accent, marginTop: spacing.xl }]}>RECENT NOTES</Text>{loading ? <ActivityIndicator color={colors.primary} /> : notes.length === 0 ? <Text style={[type.body, { color: colors.textMuted, marginTop: spacing.sm }]}>{t("calendar.noNotesToday")}</Text> : notes.map((note) => <Card key={note.id} style={{ marginTop: spacing.sm }}><Text style={[type.body, { color: colors.text }]}>{note.body}</Text></Card>)}</PremiumGate>}
+  </Screen>
 }
-
-export default function CalendarScreen() {
-  const { t } = useTranslation()
-  const { colors, spacing, radius } = useTheme()
-  const { isPremium } = usePremium()
-
-  const [date] = useState(todayIso())
-  const [notes, setNotes] = useState<Note[]>([])
-  const [draft, setDraft] = useState("")
-  const [loading, setLoading] = useState(true)
-  const [saving, setSaving] = useState(false)
-  const [needsAuth, setNeedsAuth] = useState(false)
-
-  const load = useCallback(() => {
-    setLoading(true)
-    getNotesForDate(date)
-      .then((data) => {
-        setNotes(data)
-        setNeedsAuth(false)
-      })
-      .catch((err) => {
-        if (err instanceof ApiError && err.status === 401) setNeedsAuth(true)
-      })
-      .finally(() => setLoading(false))
-  }, [date])
-
-  useEffect(() => {
-    load()
-  }, [load])
-
-  async function handleSave() {
-    if (!draft.trim()) return
-    setSaving(true)
-    try {
-      const note = await createNote({ note_date: date, body: draft.trim() })
-      setNotes((prev) => [note, ...prev])
-      setDraft("")
-    } catch {
-      // Swallow for now — a toast/snackbar can surface this later.
-    } finally {
-      setSaving(false)
-    }
-  }
-
-  return (
-    <Screen header={<AppHeader eyebrow={t("common.appName")} title={t("calendar.title")} />}>
-      <Text style={{ color: colors.textMuted, marginTop: 2 }}>{t("common.today")}: {date}</Text>
-
-      {needsAuth ? (
-        <Card style={{ marginTop: spacing.lg }}>
-          <Text style={{ color: colors.text }}>{t("auth.login")}</Text>
-        </Card>
-      ) : (
-        <PremiumGate unlocked={isPremium} minHeight={320}>
-          <Card style={{ marginTop: spacing.lg }}>
-            <TextInput
-              value={draft}
-              onChangeText={setDraft}
-              placeholder={t("calendar.notePlaceholder")}
-              placeholderTextColor={colors.textMuted}
-              multiline
-              style={{ color: colors.text, minHeight: 80, textAlignVertical: "top" }}
-            />
-            <Pressable
-              onPress={handleSave}
-              disabled={saving || !draft.trim()}
-              style={[
-                styles.saveButton,
-                { backgroundColor: colors.primary, borderRadius: radius.sm, opacity: saving ? 0.6 : 1 },
-              ]}
-            >
-              <Ionicons name="add" size={16} color={colors.primaryForeground} />
-              <Text style={{ color: colors.primaryForeground, fontWeight: "700" }}>
-                {t("calendar.addNote")}
-              </Text>
-            </Pressable>
-          </Card>
-
-          <View style={{ marginTop: spacing.xl }}>
-            <SectionHeader title={t("calendar.myNotes")} />
-            {loading ? (
-              <ActivityIndicator color={colors.primary} />
-            ) : notes.length === 0 ? (
-              <Text style={{ color: colors.textMuted }}>{t("calendar.noNotesToday")}</Text>
-            ) : (
-              notes.map((note) => (
-                <Card key={note.id} style={{ marginBottom: spacing.sm }}>
-                  <Text style={{ color: colors.text }}>{note.body}</Text>
-                </Card>
-              ))
-            )}
-          </View>
-        </PremiumGate>
-      )}
-    </Screen>
-  )
-}
-
-const styles = StyleSheet.create({
-  saveButton: {
-    marginTop: 12,
-    flexDirection: "row",
-    gap: 6,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingVertical: 10,
-  },
-})
+const styles = StyleSheet.create({ dateRow: { flexDirection: "row", alignItems: "center", justifyContent: "space-between" }, progressRing: { width: 56, height: 56, borderWidth: 4, borderRadius: 28, alignItems: "center", justifyContent: "center" }, routine: { minHeight: 58, borderTopWidth: 1, flexDirection: "row", alignItems: "center", gap: 12, paddingHorizontal: 16 }, week: { flexDirection: "row", justifyContent: "space-between" }, day: { alignItems: "center", gap: 8 }, dayDot: { width: 30, height: 30, borderRadius: 15, alignItems: "center", justifyContent: "center" }, noteBox: { borderWidth: 1, padding: 16 }, save: { paddingVertical: 12, flexDirection: "row", alignItems: "center", justifyContent: "center", gap: 7 } })

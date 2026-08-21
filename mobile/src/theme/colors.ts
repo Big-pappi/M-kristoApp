@@ -7,11 +7,11 @@ export const colors = {
     overlay: "rgba(25,19,56,0.55)", scrim: "rgba(25,19,56,0.88)", onImage: "#FFFFFF", onImageMuted: "rgba(255,255,255,0.72)",
   },
   dark: {
-    background: "#151329", backgroundAlt: "#1D1938", surface: "#242044", surfaceMuted: "#302A50", surfaceRaised: "#2C274C",
-    border: "#413A61", borderStrong: "#574E78", text: "#F6F2E9", textMuted: "#BDB6CD", textFaint: "#89819D",
-    primary: "#B3ADEB", primaryMuted: "#9188D0", primaryDeep: "#0C0A1B", primaryForeground: "#151329", primarySoft: "#38315C",
-    accent: "#E4865F", accentSoft: "#4A2D2A", accentForeground: "#FFFFFF", success: "#5FA481", danger: "#E27D6C",
-    overlay: "rgba(8,6,24,0.62)", scrim: "rgba(8,6,24,0.9)", onImage: "#FFFFFF", onImageMuted: "rgba(255,255,255,0.72)",
+    background: "#121315", backgroundAlt: "#191B1D", surface: "#202326", surfaceMuted: "#2A2E31", surfaceRaised: "#282C2F",
+    border: "#3B4145", borderStrong: "#535B60", text: "#F3F1EA", textMuted: "#B8BBB8", textFaint: "#858B8C",
+    primary: "#D6D1C4", primaryMuted: "#B7B1A3", primaryDeep: "#0C0D0E", primaryForeground: "#151617", primarySoft: "#3A3A36",
+    accent: "#E28A61", accentSoft: "#4A3029", accentForeground: "#FFFFFF", success: "#79B18D", danger: "#E27D6C",
+    overlay: "rgba(8,9,10,0.68)", scrim: "rgba(8,9,10,0.9)", onImage: "#FFFFFF", onImageMuted: "rgba(255,255,255,0.72)",
   },
 }
 export type ThemeColors = typeof colors.light
