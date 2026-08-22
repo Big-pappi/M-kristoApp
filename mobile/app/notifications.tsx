@@ -35,27 +35,25 @@ export default function NotificationsScreen() {
           <Stack.Screen options={{ headerShown: false }} />
           <AppHeader
             back
-            eyebrow={t("common.appName")}
             title={t("notifications.title")}
             action={
               unreadCount > 0 ? (
                 <Pressable
                   onPress={markAllRead}
-                  hitSlop={8}
+                  hitSlop={10}
                   accessibilityRole="button"
+                  accessibilityLabel={t("notifications.markAllRead")}
                   style={({ pressed }) => [
                     styles.markAll,
                     {
-                      backgroundColor: colors.primarySoft,
+                      backgroundColor: colors.surface,
+                      borderColor: colors.borderStrong,
                       borderRadius: radius.full,
-                      opacity: pressed ? 0.7 : 1,
+                      opacity: pressed ? 0.65 : 1,
                     },
                   ]}
                 >
-                  <Ionicons name="checkmark-done" size={14} color={colors.primary} />
-                  <Text style={[styles.markAllText, { color: colors.primary }]}>
-                    {t("notifications.markAllRead")}
-                  </Text>
+                  <Ionicons name="checkmark-done-outline" size={19} color={colors.primary} />
                 </Pressable>
               ) : null
             }
