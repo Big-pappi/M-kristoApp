@@ -4,9 +4,9 @@ import { useLocalSearchParams } from "expo-router"
 import { useEffect, useState } from "react"
 import { useTranslation } from "react-i18next"
 import { Pressable, StyleSheet, Text, TextInput, View } from "react-native"
-import { AppHeader } from "../../src/components/AppHeader"
-import { Screen } from "../../src/components/Screen"
-import { useTheme } from "../../src/theme/useTheme"
+import { AppHeader } from "../src/components/AppHeader"
+import { Screen } from "../src/components/Screen"
+import { useTheme } from "../src/theme/useTheme"
 
 const KEY = "@mkristo/community-posts"
 type Post = { id: string; name: string; text: string; reference?: string; likes: number; replies: number }

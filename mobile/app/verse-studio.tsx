@@ -199,7 +199,7 @@ export default function VerseStudioScreen() {
       </View>
 
       <Pressable
-        onPress={() => router.push({ pathname: "/(tabs)/community", params: { text: verseText, reference } })}
+        onPress={() => router.push({ pathname: "/community", params: { text: verseText, reference } })}
         accessibilityRole="button"
         accessibilityLabel={isEnglish ? "Share verse to community" : "Shiriki kifungu kwenye jamii"}
         style={({ pressed }) => [styles.communityShare, { backgroundColor: colors.accentSoft, borderColor: colors.accent, borderRadius: radius.lg, opacity: pressed ? 0.76 : 1 }]}
