@@ -294,7 +294,7 @@ export default function BibleScreen() {
                             </Text>
                             <Ionicons name="people-outline" size={13} color={colors.textMuted} />
                             <Text style={[type.caption, { color: colors.textMuted }]}>
-                              {book.order_index % 7 === 0 ? "1.2k" : book.order_index % 3 === 0 ? "684" : "246"}
+                              {book.order_index % 7 === 0 ? "1,248" : book.order_index % 3 === 0 ? "684" : "246"} reading
                             </Text>
                           </View>
                         </Pressable>

@@ -8,10 +8,10 @@ export default function TabsLayout() {
   const { t, i18n } = useTranslation()
   const { colors, radius } = useTheme()
   const isEnglish = i18n.language === "en"
-  return <Tabs screenOptions={({ route }) => ({ headerShown: false, tabBarActiveTintColor: colors.accent, tabBarInactiveTintColor: colors.textMuted, tabBarStyle: [styles.bar, { backgroundColor: colors.surface, borderColor: colors.border }], tabBarLabelStyle: styles.label, tabBarItemStyle: styles.item, tabBarIcon: ({ color, focused }) => { const icons: Record<string, keyof typeof Ionicons.glyphMap> = { index: focused ? "sunny" : "sunny-outline", bible: focused ? "book" : "book-outline", explore: focused ? "compass" : "compass-outline", calendar: focused ? "journal" : "journal-outline", profile: focused ? "person" : "person-outline" }; return <View style={[styles.icon, focused && { backgroundColor: colors.accentSoft, borderRadius: radius.full }]}><Ionicons name={icons[route.name] ?? "ellipse-outline"} color={color} size={19} /></View> } })}>
+  return <Tabs screenOptions={({ route }) => ({ headerShown: false, tabBarActiveTintColor: colors.accent, tabBarInactiveTintColor: colors.textMuted, tabBarStyle: [styles.bar, { backgroundColor: colors.surface, borderColor: colors.border }], tabBarLabelStyle: styles.label, tabBarItemStyle: styles.item, tabBarIcon: ({ color, focused }) => { const icons: Record<string, keyof typeof Ionicons.glyphMap> = { index: focused ? "sunny" : "sunny-outline", bible: focused ? "book" : "book-outline", explore: focused ? "compass" : "compass-outline", calendar: focused ? "heart" : "heart-outline", profile: focused ? "person" : "person-outline" }; return <View style={[styles.icon, focused && { backgroundColor: colors.accentSoft, borderRadius: radius.full }]}><Ionicons name={icons[route.name] ?? "ellipse-outline"} color={color} size={19} /></View> } })}>
     <Tabs.Screen name="index" options={{ title: t("tabs.today") }} />
-    <Tabs.Screen name="community" options={{ title: isEnglish ? "Community" : "Jamii" }} />
     <Tabs.Screen name="explore" options={{ title: t("tabs.explore") }} />
+    <Tabs.Screen name="calendar" options={{ title: t("tabs.journal") }} />
     <Tabs.Screen name="bible" options={{ title: t("tabs.bible") }} />
     <Tabs.Screen name="profile" options={{ title: t("tabs.profile") }} />
     <Tabs.Screen name="prayers" options={{ href: null }} />

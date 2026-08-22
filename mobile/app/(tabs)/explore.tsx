@@ -12,6 +12,7 @@ const resources = [
   ["Hymns", "Songs for worship and reflection", "hymns.webp"],
   ["Courses", "Grow at your own pace", "courses.webp"],
   ["Verse Studio", "Create and save verse cards", "verse-studio.webp"],
+  ["Community", "Share verses and reflections", "community.webp"],
 ] as const
 
 export default function ExploreScreen() {
@@ -25,7 +26,7 @@ export default function ExploreScreen() {
       <Text style={[type.overline, { color: colors.accent }]}>MEMBERSHIP</Text><Text style={[type.heading, { color: colors.primaryForeground, marginTop: 6 }]}>Go deeper in your faith</Text><Text style={[type.body, { color: colors.primaryForeground, opacity: 0.72, marginTop: 4 }]}>Unlock every book, course, prayer guide, and studio tool.</Text><Text style={[type.label, { color: colors.accent, marginTop: 16 }]}>VIEW PLANS  →</Text>
     </Pressable>
     <Text style={[type.overline, { color: colors.text, marginTop: spacing.xl }]}>LIBRARY</Text>
-    <View style={styles.grid}>{resources.map(([title, body, file]) => <Pressable key={title} onPress={() => !isPremium && router.push("/subscription")} style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border, borderRadius: radius.md }]}>
+    <View style={styles.grid}>{resources.map(([title, body, file]) => <Pressable key={title} onPress={() => title === "Community" ? router.push("/(tabs)/community") : !isPremium && router.push("/subscription")} style={[styles.card, { backgroundColor: colors.surface, borderColor: colors.border, borderRadius: radius.md }]}>
       <Image source={{ uri: `/images/explore/${file}` }} style={[styles.image, { backgroundColor: colors.surfaceMuted, borderRadius: radius.sm }]} accessibilityLabel={`${title} resource cover`} />
       <View style={styles.cardBody}><Text style={[type.heading, { color: colors.text }]}>{title}</Text><Text style={[type.caption, { color: colors.textMuted, marginTop: 4 }]}>{body}</Text><Text style={[type.overline, { color: isPremium ? colors.success : colors.accent, marginTop: 14 }]}>{isPremium ? "OPEN" : "PREMIUM  ·  LOCKED"}</Text></View>
     </Pressable>)}</View>
