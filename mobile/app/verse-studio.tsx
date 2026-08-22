@@ -198,6 +198,17 @@ export default function VerseStudioScreen() {
         </Pressable>
       </View>
 
+      <Pressable
+        onPress={() => router.push({ pathname: "/(tabs)/community", params: { text: verseText, reference } })}
+        accessibilityRole="button"
+        accessibilityLabel={isEnglish ? "Share verse to community" : "Shiriki kifungu kwenye jamii"}
+        style={({ pressed }) => [styles.communityShare, { backgroundColor: colors.accentSoft, borderColor: colors.accent, borderRadius: radius.lg, opacity: pressed ? 0.76 : 1 }]}
+      >
+        <View style={[styles.communityIcon, { backgroundColor: colors.accent }]}><Ionicons name="people" size={18} color={colors.accentForeground} /></View>
+        <View style={{ flex: 1 }}><Text style={[type.heading, { color: colors.text }]}>{isEnglish ? "Share with community" : "Shiriki na jamii"}</Text><Text style={[type.caption, { color: colors.textMuted }]}>{isEnglish ? "Encourage readers with this verse" : "Watie moyo wasomaji kwa kifungu hiki"}</Text></View>
+        <Ionicons name="arrow-forward" size={19} color={colors.accent} />
+      </Pressable>
+
       {/* Background picker */}
       <Text style={[type.overline, { color: colors.textFaint, marginTop: spacing.lg }]}>
         {t("verseStudio.background")}
@@ -325,6 +336,8 @@ const styles = StyleSheet.create({
   },
   wmLogo: { width: 38, height: 38, opacity: 0.9 },
   actions: { flexDirection: "row", gap: 12 },
+  communityShare: { flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 1, padding: 14, marginTop: 14 },
+  communityIcon: { width: 36, height: 36, borderRadius: 18, alignItems: "center", justifyContent: "center" },
   actionButton: {
     flex: 1,
     height: 64,
