@@ -158,25 +158,22 @@ export default function VerseStudioScreen() {
       </View>
 
       {/* Export actions */}
-      <View style={[styles.actions, { marginTop: spacing.md }]}> 
+      <View style={[styles.actions, { marginTop: spacing.md }]}>
         <Pressable
           onPress={handleShare}
           disabled={busy !== null}
           accessibilityRole="button"
           accessibilityLabel={t("verseStudio.share")}
           style={({ pressed }) => [
-            styles.actionCard,
-            { backgroundColor: colors.primary, borderColor: colors.primary, opacity: pressed ? 0.82 : 1 },
+            styles.actionButton,
+            { backgroundColor: colors.primary, borderColor: colors.primary, opacity: pressed ? 0.72 : 1 },
           ]}
         >
-          <View style={styles.actionIconBox}>
-            {busy === "share" ? <ActivityIndicator color="#221B10" /> : <Ionicons name="paper-plane" size={22} color="#221B10" />}
-          </View>
-          <View style={styles.actionCopy}>
-            <Text style={styles.actionTitle}>{t("verseStudio.share")}</Text>
-            <Text style={styles.actionHint}>Send this verse to someone</Text>
-          </View>
-          <Ionicons name="arrow-forward" size={20} color="#221B10" />
+          {busy === "share" ? (
+            <ActivityIndicator color={colors.primaryForeground} />
+          ) : (
+            <Ionicons name="paper-plane" size={25} color={colors.primaryForeground} />
+          )}
         </Pressable>
 
         <Pressable
@@ -185,22 +182,19 @@ export default function VerseStudioScreen() {
           accessibilityRole="button"
           accessibilityLabel={t("verseStudio.save")}
           style={({ pressed }) => [
-            styles.actionCard,
+            styles.actionButton,
             {
               backgroundColor: colors.surface,
               borderColor: colors.borderStrong,
-              opacity: pressed ? 0.78 : 1,
+              opacity: pressed ? 0.68 : 1,
             },
           ]}
         >
-          <View style={[styles.actionIconBox, { backgroundColor: colors.surfaceElevated }]}>
-            {busy === "save" ? <ActivityIndicator color={colors.primary} /> : <Ionicons name="download" size={22} color={colors.primary} />}
-          </View>
-          <View style={styles.actionCopy}>
-            <Text style={[styles.actionTitle, { color: colors.text }]}>{t("verseStudio.save")}</Text>
-            <Text style={[styles.actionHint, { color: colors.textFaint }]}>Keep it in your gallery</Text>
-          </View>
-          <Ionicons name="arrow-forward" size={20} color={colors.textFaint} />
+          {busy === "save" ? (
+            <ActivityIndicator color={colors.primary} />
+          ) : (
+            <Ionicons name="download-outline" size={27} color={colors.primary} />
+          )}
         </Pressable>
       </View>
 
@@ -330,27 +324,20 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   wmLogo: { width: 38, height: 38, opacity: 0.9 },
-  actions: { gap: 12 },
-  actionCard: {
-    minHeight: 76,
+  actions: { flexDirection: "row", gap: 12 },
+  actionButton: {
+    flex: 1,
+    height: 64,
     borderWidth: 1,
-    borderRadius: 18,
-    paddingHorizontal: 14,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 13,
-  },
-  actionIconBox: {
-    width: 46,
-    height: 46,
-    borderRadius: 14,
-    backgroundColor: "rgba(255,255,255,0.34)",
+    borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
+    shadowColor: "#000000",
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 2,
   },
-  actionCopy: { flex: 1, gap: 3 },
-  actionTitle: { color: "#221B10", fontWeight: "900", fontSize: 16, letterSpacing: 0.2 },
-  actionHint: { color: "rgba(34,27,16,0.66)", fontSize: 12, fontWeight: "600" },
   swatch: { width: 76, height: 96, overflow: "hidden", position: "relative" },
   swatchImg: { width: "100%", height: "100%" },
   swatchLock: {
