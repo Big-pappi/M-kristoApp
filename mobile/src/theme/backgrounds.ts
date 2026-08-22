@@ -130,6 +130,8 @@ export type VerseFont = {
 export const VERSE_FONTS: VerseFont[] = [
   { id: "serif", label: "Scripture", family: "serif", weight: "400" },
   { id: "serif-italic", label: "Psalm", family: "serif", weight: "400", italic: true },
+  { id: "serif-bold", label: "Proclaim", family: "serif", weight: "700" },
   { id: "sans-bold", label: "Bold", family: "sans-serif", weight: "700", letterSpacing: -0.4 },
+  { id: "sans-clean", label: "Clear", family: "sans-serif", weight: "600", letterSpacing: 0.1 },
   { id: "mono", label: "Modern", family: "monospace", weight: "400", letterSpacing: 0.4 },
 ]

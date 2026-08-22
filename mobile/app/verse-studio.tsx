@@ -108,7 +108,7 @@ export default function VerseStudioScreen() {
       header={
         <>
           <Stack.Screen options={{ headerShown: false }} />
-          <AppHeader back eyebrow={t("verseStudio.title")} title={t("verseStudio.subtitle")} />
+          <AppHeader back title={t("verseStudio.title")} />
         </>
       }
     >
@@ -152,10 +152,7 @@ export default function VerseStudioScreen() {
 
           {/* Watermark */}
           <View style={styles.watermark}>
-            <View style={styles.wmMark}>
-              <Text style={styles.wmMarkText}>M</Text>
-            </View>
-            <Text style={styles.wmText}>{t("verseStudio.watermark")}</Text>
+            <Image source={require("../assets/icon.png")} style={styles.wmLogo} resizeMode="contain" />
           </View>
         </ViewShot>
       </View>
@@ -168,12 +165,7 @@ export default function VerseStudioScreen() {
           accessibilityRole="button"
           style={({ pressed }) => [styles.actionBtn, { opacity: pressed ? 0.9 : 1 }]}
         >
-          <LinearGradient
-            colors={gradients.gild}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={[styles.actionInner, { borderRadius: radius.md }]}
-          >
+          <View style={[styles.actionInner, { borderRadius: radius.md, backgroundColor: colors.primary }]}>
             {busy === "share" ? (
               <ActivityIndicator color="#221B10" />
             ) : (
@@ -182,7 +174,7 @@ export default function VerseStudioScreen() {
                 <Text style={styles.goldText}>{t("verseStudio.share")}</Text>
               </>
             )}
-          </LinearGradient>
+          </View>
         </Pressable>
 
         <Pressable
@@ -333,20 +325,10 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 16,
     right: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  wmMark: {
-    width: 20,
-    height: 20,
-    borderRadius: 5,
-    backgroundColor: "rgba(255,255,255,0.16)",
     alignItems: "center",
     justifyContent: "center",
   },
-  wmMarkText: { color: "#F4D68A", fontWeight: "800", fontSize: 12 },
-  wmText: { color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: "700", letterSpacing: 0.5 },
+  wmLogo: { width: 38, height: 38, opacity: 0.9 },
   actions: { flexDirection: "row", gap: 10 },
   actionBtn: { flex: 1, overflow: "hidden" },
   actionInner: {
