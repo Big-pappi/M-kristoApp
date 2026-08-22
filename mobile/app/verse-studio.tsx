@@ -108,7 +108,7 @@ export default function VerseStudioScreen() {
       header={
         <>
           <Stack.Screen options={{ headerShown: false }} />
-          <AppHeader back eyebrow={t("verseStudio.title")} title={t("verseStudio.subtitle")} />
+          <AppHeader back title={t("verseStudio.title")} />
         </>
       }
     >
@@ -152,64 +152,62 @@ export default function VerseStudioScreen() {
 
           {/* Watermark */}
           <View style={styles.watermark}>
-            <View style={styles.wmMark}>
-              <Text style={styles.wmMarkText}>M</Text>
-            </View>
-            <Text style={styles.wmText}>{t("verseStudio.watermark")}</Text>
+            <Image source={require("../assets/icon.png")} style={styles.wmLogo} resizeMode="contain" />
           </View>
         </ViewShot>
       </View>
 
-      {/* Actions */}
+      {/* Export actions */}
       <View style={[styles.actions, { marginTop: spacing.md }]}>
         <Pressable
           onPress={handleShare}
           disabled={busy !== null}
           accessibilityRole="button"
-          style={({ pressed }) => [styles.actionBtn, { opacity: pressed ? 0.9 : 1 }]}
+          accessibilityLabel={t("verseStudio.share")}
+          style={({ pressed }) => [
+            styles.actionButton,
+            { backgroundColor: colors.primary, borderColor: colors.primary, opacity: pressed ? 0.72 : 1 },
+          ]}
         >
-          <LinearGradient
-            colors={gradients.gild}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={[styles.actionInner, { borderRadius: radius.md }]}
-          >
-            {busy === "share" ? (
-              <ActivityIndicator color="#221B10" />
-            ) : (
-              <>
-                <Ionicons name="share-social" size={17} color="#221B10" />
-                <Text style={styles.goldText}>{t("verseStudio.share")}</Text>
-              </>
-            )}
-          </LinearGradient>
+          {busy === "share" ? (
+            <ActivityIndicator color={colors.primaryForeground} />
+          ) : (
+            <Ionicons name="paper-plane" size={25} color={colors.primaryForeground} />
+          )}
         </Pressable>
 
         <Pressable
           onPress={handleSave}
           disabled={busy !== null}
           accessibilityRole="button"
+          accessibilityLabel={t("verseStudio.save")}
           style={({ pressed }) => [
-            styles.actionBtn,
-            styles.saveBtn,
+            styles.actionButton,
             {
               backgroundColor: colors.surface,
               borderColor: colors.borderStrong,
-              borderRadius: radius.md,
-              opacity: pressed ? 0.9 : 1,
+              opacity: pressed ? 0.68 : 1,
             },
           ]}
         >
           {busy === "save" ? (
             <ActivityIndicator color={colors.primary} />
           ) : (
-            <>
-              <Ionicons name="download-outline" size={17} color={colors.text} />
-              <Text style={[styles.saveText, { color: colors.text }]}>{t("verseStudio.save")}</Text>
-            </>
+            <Ionicons name="download-outline" size={27} color={colors.primary} />
           )}
         </Pressable>
       </View>
+
+      <Pressable
+        onPress={() => router.push({ pathname: "/community", params: { text: verseText, reference } })}
+        accessibilityRole="button"
+        accessibilityLabel={isEnglish ? "Share verse to community" : "Shiriki kifungu kwenye jamii"}
+        style={({ pressed }) => [styles.communityShare, { backgroundColor: colors.accentSoft, borderColor: colors.accent, borderRadius: radius.lg, opacity: pressed ? 0.76 : 1 }]}
+      >
+        <View style={[styles.communityIcon, { backgroundColor: colors.accent }]}><Ionicons name="people" size={18} color={colors.accentForeground} /></View>
+        <View style={{ flex: 1 }}><Text style={[type.heading, { color: colors.text }]}>{isEnglish ? "Share with community" : "Shiriki na jamii"}</Text><Text style={[type.caption, { color: colors.textMuted }]}>{isEnglish ? "Encourage readers with this verse" : "Watie moyo wasomaji kwa kifungu hiki"}</Text></View>
+        <Ionicons name="arrow-forward" size={19} color={colors.accent} />
+      </Pressable>
 
       {/* Background picker */}
       <Text style={[type.overline, { color: colors.textFaint, marginTop: spacing.lg }]}>
@@ -333,39 +331,26 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 16,
     right: 16,
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 6,
-  },
-  wmMark: {
-    width: 20,
-    height: 20,
-    borderRadius: 5,
-    backgroundColor: "rgba(255,255,255,0.16)",
     alignItems: "center",
     justifyContent: "center",
   },
-  wmMarkText: { color: "#F4D68A", fontWeight: "800", fontSize: 12 },
-  wmText: { color: "rgba(255,255,255,0.85)", fontSize: 12, fontWeight: "700", letterSpacing: 0.5 },
-  actions: { flexDirection: "row", gap: 10 },
-  actionBtn: { flex: 1, overflow: "hidden" },
-  actionInner: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
-    paddingVertical: 14,
-  },
-  goldText: { color: "#221B10", fontWeight: "800", fontSize: 15 },
-  saveBtn: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-    gap: 8,
+  wmLogo: { width: 38, height: 38, opacity: 0.9 },
+  actions: { flexDirection: "row", gap: 12 },
+  communityShare: { flexDirection: "row", alignItems: "center", gap: 12, borderWidth: 1, padding: 14, marginTop: 14 },
+  communityIcon: { width: 36, height: 36, borderRadius: 18, alignItems: "center", justifyContent: "center" },
+  actionButton: {
+    flex: 1,
+    height: 64,
     borderWidth: 1,
-    paddingVertical: 14,
+    borderRadius: 20,
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#000000",
+    shadowOpacity: 0.08,
+    shadowRadius: 10,
+    shadowOffset: { width: 0, height: 4 },
+    elevation: 2,
   },
-  saveText: { fontWeight: "700", fontSize: 15 },
   swatch: { width: 76, height: 96, overflow: "hidden", position: "relative" },
   swatchImg: { width: "100%", height: "100%" },
   swatchLock: {

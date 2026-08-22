@@ -15,11 +15,15 @@
     "today": "Today"
   },
   "tabs": {
-    "home": "Home",
+    "today": "Today",
+    "home": "Today",
     "bible": "Bible",
+    "explore": "Explore",
+    "journal": "Journal",
+    "profile": "Profile",
     "prayers": "Prayers",
     "calendar": "Journal",
-    "more": "More"
+    "more": "Explore"
   },
   "home": {
     "greeting": "Hello",

@@ -15,11 +15,15 @@
     "today": "Leo"
   },
   "tabs": {
-    "home": "Nyumbani",
+    "today": "Leo",
+    "home": "Leo",
     "bible": "Biblia",
+    "explore": "Gundua",
+    "journal": "Shajara",
+    "profile": "Wasifu",
     "prayers": "Sala",
     "calendar": "Shajara",
-    "more": "Zaidi"
+    "more": "Gundua"
   },
   "home": {
     "greeting": "Habari yako",
